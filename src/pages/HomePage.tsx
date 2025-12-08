@@ -193,7 +193,7 @@ useEffect(() => {
 
 
 const heroImagesDesktop = [owl];
-const heroImagesMobile = [heroMobile];
+const heroImagesMobile = [owl];
 
 const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 
