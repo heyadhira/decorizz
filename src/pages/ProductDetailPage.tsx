@@ -11,7 +11,8 @@ import { toast } from 'sonner';
 import { cartEvents } from '../utils/cartEvents';
 import { optimizeImage } from "../utils/optimizeImage";
 import { useInView } from "react-intersection-observer";
-import { LazyShow } from '../components/LazyShow';
+import LazyShow from "../components/LazyShow";
+
 
 export default function ProductDetailPage() {
   const { id } = useParams();
