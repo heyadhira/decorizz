@@ -165,13 +165,15 @@ function ProductCardComponent({ product, overridePrice, eyeNavigates }: ProductC
             onClick={(e) => e.stopPropagation()}
           >
             <div className="grid grid-cols-1 md:grid-cols-2">
-              <div className="bg-gray-100">
-                <ImageWithFallback
-                  src={product.image}
-                  alt={product.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+              <div className="relative aspect-square overflow-hidden bg-gray-100">
+  <ImageWithFallback
+    src={optimizeImage(product.image, 480)}
+    alt={product.name}
+    className="w-full h-full object-cover"
+  />
+</div>
+
+
 
               <div className="p-6">
                 <p className="text-sm text-gray-500 mb-1">{product.category}</p>
