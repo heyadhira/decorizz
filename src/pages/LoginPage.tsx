@@ -56,7 +56,7 @@ export default function LoginPage() {
           
           </Link>
 
-          <h1 className="section-title">Sign in to your account</h1>
+          <h1 className="custom-heading">Sign in to your account</h1>
         </div>
 
         {/* FORM */}

@@ -7,7 +7,7 @@ export default function TermsPage() {
     <div className="min-h-screen about-theme content-offset">
       <Navbar />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="section-title mb-6"><span className="text-[#3b2f27]">Terms</span> <span style={{ color: '#14b8a6' }}>&amp; Conditions</span></h1>
+        <h1 className="custom-heading mb-6"><span className="text-[#3b2f27]">Terms</span> <span style={{ color: '#14b8a6' }}>&amp; Conditions</span></h1>
         <div className="soft-card p-6 space-y-6">
           <p>Welcome to Decorizz. By accessing or purchasing from our website (www.decorizz.com), you agree to the following Terms &amp; Conditions. Please read them carefully before using our services.</p>
           <h2 className="text-xl font-semibold">General</h2>

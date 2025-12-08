@@ -149,7 +149,7 @@ export default function CartPage() {
 
       <div className="max-w-7xl mx-auto px-4 py-12">
 
-        <h1 className="text-5xl font-bold text-gray-900 mb-12 text-center">
+        <h1 className="custom-heading font-bold text-center mb-6 mt-6 text-gray-900">
           Your <span style={{ color: "#14b8a6" }}>Cart</span>
         </h1>
 

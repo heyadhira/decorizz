@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext, useMemo,useRef } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -10,6 +10,8 @@ import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { cartEvents } from '../utils/cartEvents';
 import { optimizeImage } from "../utils/optimizeImage";
+import { useInView } from "react-intersection-observer";
+import { LazyShow } from '../components/LazyShow';
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -29,6 +31,27 @@ export default function ProductDetailPage() {
   const [defaultSize, setDefaultSize] = useState('');
   const [defaultFormat, setDefaultFormat] = useState<'Rolled' | 'Canvas' | 'Frame'>('Rolled');
   const [zoom, setZoom] = useState(1);
+
+  const imageContainerRef = useRef(null);
+
+useEffect(() => {
+  const container = imageContainerRef.current;
+  if (!container) return;
+
+  const handleWheel = (e) => {
+    e.preventDefault();
+    if (e.deltaY < 0) {
+      setZoom((z) => Math.min(2.5, z + 0.1)); // zoom in
+    } else {
+      setZoom((z) => Math.max(0.9, z - 0.1)); // zoom out (10% min)
+    }
+  };
+
+  container.addEventListener("wheel", handleWheel, { passive: false });
+
+  return () => container.removeEventListener("wheel", handleWheel);
+}, []);
+
 
   useEffect(() => {
     fetchProduct();
@@ -364,31 +387,54 @@ const mainImage = useMemo(() => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
 
           {/* Image Box */}
-          <div className="soft-card rounded-2xl bg-white p-4">
-            <div className="rounded-lg overflow-hidden" style={{ height: "70vh" }}>
+         <div className="soft-card rounded-2xl bg-white p-4">
   <div
-    style={{
-      transform: `scale(${zoom})`,
-      transformOrigin: "center center",
-      width: "100%",
-      height: "100%",
-    }}
+    ref={imageContainerRef}
+    className="rounded-lg overflow-hidden bg-black/5"
+    style={{ height: "70vh", cursor: zoom > 1 ? "grab" : "default" }}
   >
-    <ImageWithFallback
-      src={mainImage}
-      alt={product.name}
-      loading="lazy"
-      decoding="async"
-      className="w-full h-full object-cover"
-    />
+    <div
+      style={{
+        transform: `scale(${zoom})`,
+        transformOrigin: "center center",
+        width: "100%",
+        height: "100%",
+        transition: "transform 0.25s ease-out",
+      }}
+    >
+      <ImageWithFallback
+        src={mainImage}
+        alt={product.name}
+        loading="lazy"
+        decoding="async"
+        className="w-full h-full object-contain select-none"
+      />
+    </div>
   </div>
-</div>
 
-            <div className="flex items-center gap-2 mt-3">
-              <button onClick={() => setZoom(Math.min(2, zoom + 0.2))} className="px-6 py-1 mt-6 rounded-lg border border-gray-300 text-gray-800">Zoom In</button>
-              <button onClick={() => setZoom(Math.max(1, zoom - 0.2))} className="px-6 py-1 mt-6 rounded-lg border border-gray-300 text-gray-800">Zoom Out</button>
-              <button onClick={() => setZoom(1)} className="px-6 py-1 mt-6 rounded-lg premium-btn">Reset</button>
-            </div>
+  {/* Zoom Buttons */}
+  <div className="flex items-center gap-2 mt-3">
+    <button
+      onClick={() => setZoom((z) => Math.min(2.5, z + 0.2))}
+      className="px-6 py-1 mt-6 rounded-lg border border-gray-300 text-gray-800"
+    >
+      Zoom In
+    </button>
+
+    <button
+      onClick={() => setZoom((z) => Math.max(0.9, z - 0.2))}
+      className="px-6 py-1 mt-6 rounded-lg border border-gray-300 text-gray-800"
+    >
+      Zoom Out
+    </button>
+
+    <button
+      onClick={() => setZoom(1)}
+      className="px-6 py-1 mt-6 rounded-lg premium-btn"
+    >
+      Reset
+    </button>
+  </div>
             <div className="mt-4 rounded-2xl bg-white border border-gray-200 p-4">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Specifications</h3>
               <div className="grid grid-cols-2 gap-2 text-sm text-gray-700">
@@ -417,7 +463,7 @@ const mainImage = useMemo(() => {
             </div>
 
               
-            <h1 className="section-title animate-title mb-2 text-gray-900">
+            <h1 className="custom-heading animate-title mb-2 text-gray-900">
               {product.name}
             </h1>
 
@@ -694,19 +740,22 @@ const mainImage = useMemo(() => {
         </div>
 
         {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-20">
-            <h2 className="text-4xl font-bold text-center mb-12">
-              Related <span style={{ color: '#14b8a6' }}>Frames</span>
-            </h2>
+{relatedProducts.length > 0 && (
+  <div className="mt-20">
+    <h2 className="text-4xl font-bold text-center mb-12">
+      Related <span style={{ color: "#14b8a6" }}>Frames</span>
+    </h2>
 
-            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((product) => (
-                <ProductCard key={product.id} product={product} />
-              ))}
-            </div>
-          </div>
-        )}
+    <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      {relatedProducts.map((product) => (
+        <LazyShow key={product.id}>
+          <ProductCard product={product} />
+        </LazyShow>
+      ))}
+    </div>
+  </div>
+)}
+
       </div>
 
       <Footer />

@@ -481,7 +481,7 @@ export default function CheckoutPage() {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         {/* Heading with teal accent like HomePage */}
-        <h1 className="text-4xl md:text-5xl font-bold text-center mb-10 text-gray-900">
+        <h1 className="custom-heading font-bold text-center mb-6 mt-6 text-gray-900">
           Secure <span style={{ color: '#14b8a6' }}>Checkout</span>
         </h1>
 

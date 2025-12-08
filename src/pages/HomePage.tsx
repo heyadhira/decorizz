@@ -357,14 +357,15 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 <section
   className="py-16 lg:py-20 relative bg-cover bg-center bg-no-repeat"
   style={{ backgroundImage: `url(${colorImage})` }}
-
 >
   {/* Dark Overlay */}
-  <div className="absolute inset-0"
-       style={{
-         background: "linear-gradient(135deg, rgba(254,243,199,0.85) 0%, rgba(254,215,170,0.85) 50%, )",
-         backdropFilter: "blur(2px)"
-       }}
+  <div
+    className="absolute inset-0"
+    style={{
+      background:
+        "linear-gradient(135deg, rgba(254, 243, 199, 0.41) 0%)",
+      backdropFilter: "blur(2px)",
+    }}
   ></div>
 
   <div className="relative max-w-7xl mx-auto px-4">
@@ -372,17 +373,24 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 
       {/* LEFT */}
       <div className="space-y-8 fade-left">
-        <h2 className="text-5xl lg:text-6xl font-bold text-white pb-6 leading-tight">
+
+        {/* TITLE */}
+        <h2
+          className="
+            font-bold text-white leading-tight pb-6
+            text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+          "
+        >
           <span className="text-white">Custom</span> <br />
+
+          {/* Canvas text italic + responsive */}
           <span
-            style={{
-              fontFamily: "Georgia, serif",
-              fontStyle: "italic",
-              fontWeight: 400,
-              fontSize: "4rem",
-            }}
+            className="
+              italic font-serif text-white block
+              text-4xl sm:text-5xl md:text-6xl lg:text-7xl
+            "
           >
-           <span className="text-white">Canvas</span> 
+            Canvas
           </span>
         </h2>
 
@@ -391,22 +399,23 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
         <Link
           to="/shop?category=Canvas"
           className="inline-block px-6 py-3 rounded-lg premium-btn text-white font-semibold"
-          style={{ backgroundColor: "#14b8a6" }}
+          style={{ backgroundColor: '#14b8a6' }}
         >
           Shop Now
         </Link>
       </div>
 
-      {/* RIGHT */}
+      {/* RIGHT IMAGE */}
       <div className="fade-right relative">
         <div className="curved-image-card">
-          <img src={canva} alt="Canvas" className="w-full h-auto" />
+          <img src={canva} alt="Canvas" className="w-full h-auto object-cover" />
         </div>
       </div>
 
     </div>
   </div>
 </section>
+
 
 
       {/* FEATURED PRODUCTS */}
@@ -536,61 +545,65 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 
       {/* HOME DECOR PREMIUM PROMO */}
 <section
-  className="relative py-20 bg-cover bg-center bg-no-repeat cover-fit"
+  className="relative py-14 md:py-20 lg:py-24 bg-cover bg-center bg-no-repeat cover-fit"
   style={{
-    backgroundImage:
-      `url(${viratImage})`,
+    backgroundImage: `url(${viratImage})`,
   }}
 >
-  {/* Darker overlay for readability */}
-   <div className="absolute inset-0"
-       style={{
-         background: "linear-gradient(135deg, rgba(254,243,199,0.85) 0%, rgba(254,215,170,0.85) 50%, )",
-         backdropFilter: "blur(2px)"
-       }}
+  {/* Overlay */}
+  <div
+    className="absolute inset-0"
+    style={{
+      background:
+        "linear-gradient(135deg, rgba(254, 243, 199, 0.36) 0%",
+      backdropFilter: "blur(2px)",
+    }}
   ></div>
 
-  <div className="relative max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-14 items-center z-[5]">
+  <div className="relative max-w-7xl mx-auto px-4 md:px-6 grid lg:grid-cols-2 gap-10 md:gap-14 items-center z-[5]">
 
     {/* LEFT CONTENT */}
-    <div className="fade-left space-y-8 text-white">
+    <div className="fade-left space-y-6 text-white">
 
-      {/* Decorative boxes */}
+      {/* Decorative Boxes */}
       <div className="flex gap-3 opacity-70">
-        <div className="w-10 h-10 border-2 rounded float-box border-white/60"></div>
-        <div className="w-10 h-10 border-2 rounded float-box border-white/60"></div>
+        <div className="w-8 h-8 md:w-10 md:h-10 border-2 rounded float-box border-white/60"></div>
+        <div className="w-8 h-8 md:w-10 md:h-10 border-2 rounded float-box border-white/60"></div>
       </div>
 
       {/* TITLE */}
-      <div className="space-y-2">
-        <h2 className="custom-heading font-serif font-bold">
-          <span className="text-white">Wall</span>
+      <div className="space-y-1 md:space-y-3">
+        <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+          Wall
         </h2>
-        <h1 className="custom-heading font-serif font-extrabold">
+
+        <h1 className="font-serif font-extrabold italic text-4xl sm:text-5xl md:text-6xl lg:text-7xl leading-tight">
           Art
         </h1>
-        <h2 className="custom-heading font-serif font-bold">
-         <span className="text-white">Collection</span> 
+
+
+        <h2 className="font-serif font-bold text-3xl sm:text-4xl md:text-5xl lg:text-6xl">
+          Collection
         </h2>
       </div>
 
       {/* DESCRIPTION */}
-      <p className="text-gray-100 max-w-md leading-relaxed text-lg"><span className="text-white">
-        Discover our curated collection of premium wall décor frames — 
-        from elegant minimalist pieces to luxurious handcrafted artwork.
-      </span></p>
+      <p className="text-sm sm:text-base md:text-lg max-w-sm">
+       <span className="text-gray-900 font-extrabold"> Discover our curated collection of premium wall décor frames—from elegant
+        minimalist pieces to luxurious handcrafted artwork.</span>
+      </p>
 
       {/* BUTTON */}
       <Link
         to="/shop"
-        className="premium-btn-white inline-block"
+        className="premium-btn-white inline-block text-sm md:text-base px-6 py-3"
       >
         Explore Collection
       </Link>
 
       {/* OFFER BADGE */}
-      <div className="pt-6 pb-6">
-        <div className="promo-badge">
+      <div className="pt-2 md:pt-6 pb-6">
+        <div className="promo-badge scale-75 sm:scale-90 md:scale-100">
           <div className="inner">
             <div className="up">UP TO</div>
             <div className="num">40%</div>
@@ -598,22 +611,21 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
           </div>
         </div>
       </div>
-
     </div>
 
     {/* RIGHT IMAGE */}
-    <div className="fade-right relative">
+    <div className="fade-right relative pb-6">
       <div className="curved-image-card">
         <img
           src={viratImage}
-          className="w-full h-auto object-cover"
+          className="w-full h-auto object-cover rounded-xl"
           alt="Decor"
         />
       </div>
     </div>
-
   </div>
 </section>
+
 
 
       {/* TESTIMONIALS */}

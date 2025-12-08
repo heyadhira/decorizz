@@ -142,7 +142,7 @@ export default function AdminVideos() {
     <div className="min-h-screen bg-gray-100 flex">
       <AdminSidebar onSidebarWidthChange={(w)=>setSidebarWidth(w)} />
       <div className="w-full pt-16 p-4 md:p-8" style={{ marginLeft: isDesktop ? sidebarWidth : 0 }}>
-        <h1 className="section-title mb-6"><span className="text-[#3b2f27]">Shop by</span> <span style={{ color: '#14b8a6' }}>Videos</span></h1>
+        <h1 className="custom-heading mb-6"><span className="text-[#3b2f27]">Shop by</span> <span style={{ color: '#14b8a6' }}>Videos</span></h1>
 
         {/* Create */}
         <div className="soft-card rounded-lg p-6 mb-8">

@@ -7,7 +7,7 @@ export default function PrivacyPage() {
     <div className="min-h-screen about-theme content-offset">
       <Navbar />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="section-title mb-6"><span className="text-[#3b2f27]">Privacy</span> <span style={{ color: '#14b8a6' }}>Policy</span></h1>
+        <h1 className="custom-heading mb-6"><span className="text-[#3b2f27]">Privacy</span> <span style={{ color: '#14b8a6' }}>Policy</span></h1>
         <div className="soft-card p-6 space-y-6">
           <p>At Decorizz your privacy matters to us, and we are committed to protecting your personal information. This Privacy Policy explains how we collect, use, store, and safeguard your data when you visit or make a purchase from www.decorizz.com. By using our website, you agree to the practices described in this policy.</p>
           <h2 className="text-xl font-semibold">Information We Collect</h2>

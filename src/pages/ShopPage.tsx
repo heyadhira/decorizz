@@ -7,6 +7,7 @@ import SkeletonProductCard from '../components/SkeletonProductCard';
 import { Filter, X, ChevronDown } from 'lucide-react';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
+
 const ROOM_OPTIONS = [
   { name: 'Home Bar' },
   { name: 'Bath Space' },
@@ -43,7 +44,7 @@ interface Product {
   material?: string;
   category?: string;
   createdAt?: string;
-  subsection?: 'Basic' | '2-Set' | '3-Set' | 'Square';
+  subsection?: '2-Set' | '3-Set' | 'Square';
   format?: 'Rolled' | 'Canvas' | 'Frame';
   frameColor?: 'White' | 'Black' | 'Brown';
 }
@@ -78,7 +79,7 @@ export default function ShopPage() {
   });
 
   const [formatSubsection, setFormatSubsection] = useState<'All' | 'Rolled' | 'Canvas' | 'Frame'>('All');
-  const [subsectionChip, setSubsectionChip] = useState<'All' | 'Basic' | '2-Set' | '3-Set' | 'Square'>('All');
+  const [subsectionChip, setSubsectionChip] = useState<'All' | '2-Set' | '3-Set' | 'Square'>('All');
 
   const BASIC_PRICE: Record<string, { Rolled: number | null; Canvas: number | null; Frame: number | null }> = {
     '8X12': { Rolled: 679, Canvas: 800, Frame: 999 },
@@ -129,7 +130,7 @@ export default function ShopPage() {
   const computePriceFor = (
     size: string,
     format: 'Rolled' | 'Canvas' | 'Frame',
-    subsection?: 'Basic' | '2-Set' | '3-Set' | 'Square'
+    subsection?: '2-Set' | '3-Set' | 'Square'
   ) => {
     const key = normalizeSize(size);
     const table = subsection === '2-Set' ? TWOSET_PRICE : subsection === '3-Set' ? THREESET_PRICE : BASIC_PRICE;
@@ -313,7 +314,7 @@ const paginatedProducts = useMemo(() => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
         <div className="flex items-center justify-between mb-8">
-          <h1 className="section-title">
+          <h1 className="custom-heading">
             <span className="text-[#3b2f27]">Shop</span> <span style={{ color: '#14b8a6' }}>All Frames</span>
           </h1>
           {/* <button
@@ -449,7 +450,7 @@ const paginatedProducts = useMemo(() => {
                       <button
                         key={layout}
                         onClick={() => toggleFilter('layouts', layout)}
-                        className="px-4 py-2.5 rounded-lg border-2 text-sm transition-all transform active:scale-95"
+                        className="px-6 py-2 rounded-lg border-2 text-sm transition-all transform active:scale-95"
                         style={{
                           backgroundColor: filters.layouts.includes(layout) ? '#14b8a6' : 'white',
                           color: filters.layouts.includes(layout) ? 'white' : '#374151',
@@ -709,8 +710,8 @@ const paginatedProducts = useMemo(() => {
             </div>
 
             {/* Subsection Chips */}
-            <div className="flex flex-wrap gap-3 mb-4">
-              {(['All','Basic','2-Set','3-Set','Square'] as const).map(opt => (
+            <div className="flex flex-wrap gap-2 mb-4">
+              {(['All','2-Set','3-Set','Square'] as const).map(opt => (
                 <button
                   key={opt}
                   onClick={() => setSubsectionChip(opt)}
@@ -754,6 +755,7 @@ const paginatedProducts = useMemo(() => {
               </div>
             ) : filteredProducts.length > 0 ? (
               <>
+              
                <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {paginatedProducts.map(product => {
     const chosenSize = filters.sizes[0] || "";
@@ -765,7 +767,7 @@ const paginatedProducts = useMemo(() => {
         ? computePriceFor(
             chosenSize,
             formatSubsection as "Rolled" | "Canvas" | "Frame",
-            effectiveSub as "Basic" | "2-Set" | "3-Set" | "Square"
+            effectiveSub as  "2-Set" | "3-Set" | "Square"
           )
         : undefined;
 

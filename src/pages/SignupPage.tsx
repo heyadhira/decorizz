@@ -69,7 +69,7 @@ export default function SignupPage() {
             </span>
           </Link>
 
-          <h1 className="section-title">Create your account</h1>
+          <h1 className="custom-heading">Create your account</h1>
         </div>
 
         {/* FORM */}

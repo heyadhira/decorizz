@@ -172,7 +172,7 @@ const getDriveDirectVideoUrl = (url: string) => {
 
       <section className="sbv-page" ref={containerRef}>
         <div className="text-center pt-8 mb-6">
-          <h1 className="section-title">
+          <h1 className="custom-heading">
             <span className="text-[#3b2f27]">Shop by</span>{" "}
             <span style={{ color: '#14b8a6' }}>Videos</span>
           </h1>
@@ -180,7 +180,7 @@ const getDriveDirectVideoUrl = (url: string) => {
         </div>
 
         {/* FOLLOW SECTION */}
-        <div className="sbv-social">
+        {/* <div className="sbv-social">
           <span className="font-medium">KEEP UP WITH DECORIZZ HERE👇</span>
           <div className="flex gap-3">
             <a href="#" className="sbv-social-btn">Facebook</a>
@@ -188,7 +188,7 @@ const getDriveDirectVideoUrl = (url: string) => {
             <a href="#" className="sbv-social-btn">LinkedIn</a>
           </div>
           <span className="text-sm text-gray-600">Follow us on social media!</span>
-        </div>
+        </div> */}
 
         {/* LOADING SKELETON */}
         {loading ? (

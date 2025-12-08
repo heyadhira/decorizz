@@ -59,7 +59,7 @@ export default function AdminInstagram() {
     <div className="min-h-screen content-offset flex">
       <AdminSidebar onSidebarWidthChange={(w) => setSidebarWidth(w)} />
       <div className="w-full pt-16 p-4 md:p-10" style={{ marginLeft: isDesktop ? sidebarWidth : 0 }}>
-        <h1 className="section-title mb-8">Instagram Posts</h1>
+        <h1 className="custom-heading mb-8">Instagram Posts</h1>
 
         <div className="bg-white rounded-2xl shadow-sm border border-gray-200 p-6 mb-8">
           <form onSubmit={addItem} className="flex gap-3 items-center">

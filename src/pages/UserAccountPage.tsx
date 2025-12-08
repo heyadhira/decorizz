@@ -76,7 +76,7 @@ export default function UserAccountPage() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
 
         {/* TITLE */}
-        <h1 className="section-title mb-12">My Account</h1>
+        <h1 className="custom-heading mb-12">My Account</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
 
@@ -107,7 +107,7 @@ export default function UserAccountPage() {
             {/* PROFILE TAB */}
             {activeTab === 'profile' && (
               <div className="card-soft rounded-2xl p-8">
-                <h2 className="section-title mb-6">Profile Information</h2>
+                <h2 className="custom-heading mb-6">Profile Information</h2>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                   {[
@@ -133,7 +133,7 @@ export default function UserAccountPage() {
             {/* ORDERS TAB */}
             {activeTab === 'orders' && (
               <div className="card-soft rounded-2xl p-8">
-                <h2 className="section-title mb-6">My Orders</h2>
+                <h2 className="custom-heading mb-6">My Orders</h2>
 
                 {loading ? (
                   <div className="flex justify-center py-16">
@@ -183,7 +183,7 @@ export default function UserAccountPage() {
             {/* WISHLIST TAB */}
             {activeTab === 'wishlist' && (
               <div className="card-soft rounded-2xl p-8">
-                <h2 className="section-title mb-6">Wishlist</h2>
+                <h2 className="custom-heading mb-6">Wishlist</h2>
 
                 {wishlistProducts.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -68,8 +68,8 @@ export default function ContactUsPage() {
       {/* Heading */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h1 className="font-rashi text-5xl sm:text-6xl font-extrabold tracking-tight animate-title">
-          <span>Contact</span>{" "}
-          <span style={{ color: "#14b8a6" }}>Us</span>
+          <span className="custom-heading">Contact</span>{" "}
+          <span className="custom-heading" style={{ color: "#14b8a6" }}>Us</span>
         </h1>
         <p className="text-gray-600 mt-3">
           Get in touch with us for any enquiries and questions
@@ -78,7 +78,7 @@ export default function ContactUsPage() {
 
       {/* Main Layout */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
           {/* LEFT FORM — PREMIUM 3D CARD */}
           <TiltCard className="lg:col-span-2 soft-card p-8 card-appear">
@@ -189,7 +189,7 @@ export default function ContactUsPage() {
 
   {/* PHONE */}
   <TiltCard className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-lg p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300 card-appear">
-    <div className="flex items-start gap-5">
+    <div className="flex items-start gap-6">
 
       {/* Icon circle */}
       <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#14b8a6]/10 to-[#3b2f27]/10 flex items-center justify-center shadow-inner">
@@ -207,7 +207,7 @@ export default function ContactUsPage() {
 
   {/* EMAIL */}
   <TiltCard className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-lg p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300 card-appear">
-    <div className="flex items-start gap-5">
+    <div className="flex items-start gap-6">
 
       <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#14b8a6]/10 to-[#3b2f27]/10 flex items-center justify-center shadow-inner">
         <Mail className="w-6 h-6 text-[#14b8a6]" />
@@ -223,7 +223,7 @@ export default function ContactUsPage() {
 
   {/* LOCATION */}
   <TiltCard className="bg-white/70 backdrop-blur-xl rounded-3xl shadow-lg p-6 border border-gray-200 hover:shadow-2xl transition-all duration-300 card-appear">
-    <div className="flex items-start gap-5">
+    <div className="flex items-start gap-6">
 
       <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-[#14b8a6]/10 to-[#3b2f27]/10 flex items-center justify-center shadow-inner">
         <MapPin className="w-6 h-6 text-[#14b8a6]" />
@@ -296,8 +296,8 @@ export default function ContactUsPage() {
       </section> */}
 
       {/* MAP SECTION */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-20">
-        <h3 className="section-title text-center">Find Us</h3>
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+        <h3 className="custom-heading text-center">Find Us</h3>
         <p className="text-sm text-gray-600 text-center mt-2">
           Click the map to get directions instantly
         </p>

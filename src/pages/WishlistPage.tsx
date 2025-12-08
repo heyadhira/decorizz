@@ -33,7 +33,7 @@ export default function WishlistPage() {
     <div className="min-h-screen about-theme content-offset">
       <Navbar />
       <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h1 className="section-title mb-6"><span className="text-[#3b2f27]">Your</span> <span style={{ color: '#14b8a6' }}>Wishlist</span></h1>
+        <h1 className="custom-heading mb-6"><span className="text-[#3b2f27]">Your</span> <span style={{ color: '#14b8a6' }}>Wishlist</span></h1>
 
         {loading ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

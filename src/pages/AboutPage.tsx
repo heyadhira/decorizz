@@ -56,7 +56,7 @@ export default function AboutPage() {
       {/* WHO WE ARE */}
       <section id="who-we-are" className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-16 mb-16">
         <div className="soft-card p-10 lg:p-14 space-y-6 card-appear ">
-          <h2 className="section-title mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
+          <h2 className="custom-heading mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
             Who We <span style={{ color: "#14b8a6" }}>Are</span>
           </h2>
 
@@ -97,7 +97,7 @@ export default function AboutPage() {
      <div className="soft-card p-10 lg:p-14 card-appear p-6">
 
     {/* TITLE */}
-    <h2 className="section-title pl-6  border-b-2 border-[#14b8a6]">
+    <h2 className="custom-heading pl-6  border-b-2 border-[#14b8a6]">
       <span className="text-[#3b2f27]">Why</span>
       <span style={{ color: "#14b8a6" }}> Choose Us</span>
     </h2>
@@ -146,9 +146,9 @@ export default function AboutPage() {
   <div className="soft-card p-10 lg:p-14 card-appear p-6">
 
     {/* TITLE */}
-    <h2 className="section-title pl-6  border-b-2 border-[#14b8a6]">
+    <h2 className="custom-heading pl-6  border-b-2 border-[#14b8a6]">
       <span className="text-[#3b2f27]">Our</span>
-      <span style={{ color: "#14b8a6" }}>Mission</span>
+      <span style={{ color: "#14b8a6" }}> Mission</span>
     </h2>
 
     <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -195,7 +195,7 @@ export default function AboutPage() {
      <div className="soft-card p-10 lg:p-14 card-appear p-6">
 
     {/* TITLE */}
-    <h2 className="section-title pl-6  border-b-2 border-[#14b8a6]">
+    <h2 className="custom-heading pl-6  border-b-2 border-[#14b8a6]">
       <span className="text-[#3b2f27]">Why We</span>
       <span style={{ color: "#14b8a6" }}> Stand Out</span>
     </h2>
@@ -245,7 +245,7 @@ export default function AboutPage() {
   <div className="soft-card p-10 lg:p-14 space-y-8 card-appear">
 
     {/* Section Title */}
-    <h2 className="section-title mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
+    <h2 className="custom-heading mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
       Contact <span style={{ color: "#14b8a6" }}>Us</span>
     </h2>
 
