@@ -227,8 +227,8 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
   </Carousel>
   <div className="hero-content">
     <div className="hero-container text-left">
-      <h1 className="hero-title"><span className="text-white">Discover</span> <span className="accent">300+</span> <span className="text-white">Modern</span></h1>
-      <h2 className="hero-subtitle"><span className="text-white">Wall Frames</span></h2>
+      <h1 className="custom-heading"><span className="text-white">Discover</span> <span className="accent">300+</span> <span className="text-white">Modern</span></h1><br />
+      <h2 className="custom-heading"><span className="text-white">Wall Frames</span></h2>
       <div className="hero-buttons">
         <Link to="/shop" className="premium-btn-white">Shop Now</Link>
         <Link to="/contact" className="premium-btn-white">Contact us</Link>
@@ -243,12 +243,12 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 <section className="best-section max-w-7xl mx-auto px-4 py-16 lg:py-20 relative overflow-hidden">
 
   {/* Heading */}
-  <div className="text-center mb-8 fade-up">
-    <h2 className="section-title">
-      <span className="text-[#3b2f27]">Explore</span>
-      <span style={{ color: '#14b8a6' }}> Frames</span> for Every Room
-    </h2>
-  </div>
+<div className="text-center mb-8 fade-up">
+<h2 className="custom-heading">
+  <span className="text-[#3b2f27]">Explore</span>
+  <span style={{ color: '#14b8a6' }}> Frames</span> for Every Room
+</h2>
+</div>
 
   {/* Filter Pills */}
   <div className="flex justify-center gap-3 mb-12">
@@ -267,7 +267,7 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
   {loading ? (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {Array.from({ length: 3 }).map((_, i) => (
-        <div key={i} className="bg-white rounded-2xl shadow-sm border overflow-hidden">
+        <div key={i} className="bg-white rounded-lg shadow-sm border overflow-hidden">
           <div className="skeleton skeleton-img" style={{ aspectRatio: '4 / 5' }} />
           <div className="p-4">
             <div className="skeleton skeleton-line lg w-2/3" />
@@ -279,61 +279,64 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
     <div className="relative mb-12">
 
       <Carousel
-        opts={{ loop: true, align: "center", slidesToScroll: 1 }}
-        setApi={setBestApi}
-        className="w-full overflow-hidden"
-      >
-        <CarouselContent className="gap-6">
-
-          {featuredProducts
-            .filter((p: any) => formatFilter === "All" ? true : p.format === formatFilter)
-            .map((p: any, idx: number) => {
-
-              const total = featuredProducts.filter((x: any) =>
-                formatFilter === "All" ? true : x.format === formatFilter
-              ).length;
-
-              const leftIndex = (bestSelected - 1 + total) % total;
-              const rightIndex = (bestSelected + 1) % total;
-
-              const isCenter = idx === bestSelected;
-              const isLeft = idx === leftIndex;
-              const isRight = idx === rightIndex;
-
-              let positionClass = "best-item-side";
-              if (isCenter) positionClass = "best-item-center";
-              else if (isLeft) positionClass = "best-item-left";
-              else if (isRight) positionClass = "best-item-right";
-
-              return (
-                <CarouselItem
-  key={p.id || idx}
-  className="best-carousel-item basis-full sm:basis-1/2 lg:basis-1/3 flex justify-center"
+  opts={{ loop: true, align: "center", slidesToScroll: 1 }}
+  setApi={setBestApi}
+  className="w-full overflow-hidden"
 >
-  <Link 
-    to={`/product/${p.id}`} 
-    className={`best-item ${positionClass}`}
-    style={{ textDecoration: "none" }}
-  >
-    <div
-      className="best-card cursor-pointer"
-      style={{ aspectRatio: isCenter ? "4 / 5" : "4 / 4" }}
-    >
-      <img src={p.image} alt={p.name} loading="lazy" decoding="async" draggable={false} />
-      <div className="best-caption">{p.name}</div>
-    </div>
-  </Link>
-</CarouselItem>
+  <CarouselContent className="gap-6">
+    {featuredProducts
+      .filter((p: any) => formatFilter === "All" ? true : p.format === formatFilter)
+      .map((p: any, idx: number) => {
+        
+        const total = featuredProducts.filter((x: any) =>
+          formatFilter === "All" ? true : x.format === formatFilter
+        ).length;
 
-              );
+        const leftIndex = (bestSelected - 1 + total) % total;
+        const rightIndex = (bestSelected + 1) % total;
 
-            })}
+        const isCenter = idx === bestSelected;
+        const isLeft = idx === leftIndex;
+        const isRight = idx === rightIndex;
 
-        </CarouselContent>
+        let positionClass = "best-item-side";
+        if (isCenter) positionClass = "best-item-center";
+        else if (isLeft) positionClass = "best-item-left";
+        else if (isRight) positionClass = "best-item-right";
 
-        <CarouselPrevious className="hidden lg:flex" />
-        <CarouselNext className="hidden lg:flex" />
-      </Carousel>
+        return (
+          <CarouselItem
+            key={p.id || idx}
+            className="best-carousel-item basis-full sm:basis-1/2 lg:basis-1/3 flex justify-center"
+          >
+            <Link to={`/product/${p.id}`} className={`best-item ${positionClass}`}>
+              <div className="best-card cursor-pointer"
+                style={{ aspectRatio: isCenter ? "4 / 5" : "4 / 4" }}
+              >
+                <img src={p.image} alt={p.name} loading="lazy" decoding="async" />
+                <div className="best-caption">{p.name}</div>
+              </div>
+            </Link>
+          </CarouselItem>
+        );
+      })}
+  </CarouselContent>
+
+  {/* Always visible navigation buttons */}
+  <CarouselPrevious className="best-nav-btn left-0">
+  <svg width="18" height="18" viewBox="0 0 24 24">
+    <path d="M15 19l-7-7 7-7" stroke="currentColor" strokeWidth="2" fill="none" />
+  </svg>
+</CarouselPrevious>
+
+<CarouselNext className="best-nav-btn right-0">
+  <svg width="18" height="18" viewBox="0 0 24 24">
+    <path d="M9 5l7 7-7 7" stroke="currentColor" strokeWidth="2" fill="none" />
+  </svg>
+</CarouselNext>
+
+</Carousel>
+
 
       {/* GIANT CLICK AREAS */}
       <div className="best-click-left" onClick={() => bestApi?.scrollPrev()}></div>
@@ -446,7 +449,7 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 
     {/* Heading */}
     <div className="text-center mb-12">
-      <h2 className="text-4xl lg:text-5xl mb-3 font-serif font-extrabold">
+      <h2 className="custom-heading font-extrabold">
         Why Choose us
       </h2>
       <p className="text-gray-700 max-w-2xl mx-auto">
@@ -558,13 +561,13 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 
       {/* TITLE */}
       <div className="space-y-2">
-        <h2 className="text-4xl lg:text-5xl font-serif font-bold">
+        <h2 className="custom-heading font-serif font-bold">
           <span className="text-white">Wall</span>
         </h2>
-        <h1 className="text-6xl lg:text-7xl font-serif font-extrabold">
+        <h1 className="custom-heading font-serif font-extrabold">
           Art
         </h1>
-        <h2 className="text-4xl lg:text-5xl font-serif font-bold">
+        <h2 className="custom-heading font-serif font-bold">
          <span className="text-white">Collection</span> 
         </h2>
       </div>
@@ -638,8 +641,8 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
         <section className="py-16 lg:py-20 bg-[#faf7f4] relative">
 
           <div className="max-w-7xl mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-4xl lg:text-5xl mb-2" style={{ fontWeight: 700 }}>
+            <div className="text-center">
+              <h2 className="custom-heading" style={{ fontWeight: 700 }}>
                 What <span style={{ color: '#14b8a6' }}>People </span>Says <span style={{ color: '#14b8a6' }}>About </span>Us
               </h2>
               <div className="flex items-center justify-center gap-3 mb-3">
@@ -711,8 +714,8 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
   </section>
 ) : faqs.length > 0 && (
   <section className="faq-dark">
-    <div className="max-w-7xl mx-auto px-4 py-16">
-      <h2 className="faq-title">FAQs</h2>
+    <div className="max-w-7xl mx-auto px-4">
+      <h2 className="custom-heading">FAQs</h2>
       <div className="faq-list">
         {faqs.map((f) => (
           <details key={f.id} className="faq-item group">
