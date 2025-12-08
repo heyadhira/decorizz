@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useMemo } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -9,6 +9,7 @@ import { AuthContext } from '../context/AuthContext';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import { toast } from 'sonner';
 import { cartEvents } from '../utils/cartEvents';
+import { optimizeImage } from "../utils/optimizeImage";
 
 export default function ProductDetailPage() {
   const { id } = useParams();
@@ -282,6 +283,23 @@ export default function ProductDetailPage() {
     }
   };
 
+  
+const mainImage = useMemo(() => {
+  if (!product) return "";
+
+  const isFrame = selectedFormat === "Frame";
+
+  const colorImage = product.imagesByColor?.[selectedColor];
+
+  // Frame → use color image
+  // Canvas & Rolled → use base product image
+  const finalSrc = isFrame ? (colorImage || product.image) : product.image;
+
+  return optimizeImage(finalSrc, 800);
+}, [product, selectedColor, selectedFormat]);
+
+
+
   if (loading) {
     return (
       <div className="min-h-screen bg-white">
@@ -312,6 +330,7 @@ export default function ProductDetailPage() {
       </div>
     );
   }
+
 
   return (
     <div className="min-h-screen bg-white">
@@ -346,26 +365,25 @@ export default function ProductDetailPage() {
 
           {/* Image Box */}
           <div className="soft-card rounded-2xl bg-white p-4">
-            <div className="rounded-lg overflow-hidden" style={{ height: '90vh' }}>
-              {(() => {
-                const activeFormat = selectedFormat;
-                const isCanvas = activeFormat === 'Canvas';
-                const isRolled = activeFormat === 'Rolled';
-                const colorSrc = (product as any).imagesByColor?.[selectedColor];
-                const src = (isCanvas || isRolled) ? product.image : (colorSrc || product.image);
-                return (
-                  <div style={{ transform: `scale(${zoom})`, transformOrigin: 'center center', width: '100%', height: '100%' }}>
-                    <ImageWithFallback
-                      src={src}
-                      alt={product.name}
-                      className="w-full h-full object-contain"
-                    />
-                  </div>
-                );
-              })()}
+            <div className="rounded-lg overflow-hidden" style={{ height: "70vh" }}>
+  <div
+    style={{
+      transform: `scale(${zoom})`,
+      transformOrigin: "center center",
+      width: "100%",
+      height: "100%",
+    }}
+  >
+    <ImageWithFallback
+      src={mainImage}
+      alt={product.name}
+      loading="lazy"
+      decoding="async"
+      className="w-full h-full object-cover"
+    />
+  </div>
+</div>
 
-              
-            </div>
             <div className="flex items-center gap-2 mt-3">
               <button onClick={() => setZoom(Math.min(2, zoom + 0.2))} className="px-6 py-1 mt-6 rounded-lg border border-gray-300 text-gray-800">Zoom In</button>
               <button onClick={() => setZoom(Math.max(1, zoom - 0.2))} className="px-6 py-1 mt-6 rounded-lg border border-gray-300 text-gray-800">Zoom Out</button>

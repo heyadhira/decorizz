@@ -5,7 +5,7 @@ import { wishlistEvents } from '../utils/wishlistEvents';
 import { AuthContext } from '../context/AuthContext';
 import { cartEvents } from '../utils/cartEvents';
 import logo from "../assets/logo-r.png";
-import { TopMarquee } from "./TopMarquee";
+// import { TopMarquee } from "./TopMarquee";
 
 
 export function Navbar() {
@@ -92,7 +92,7 @@ export function Navbar() {
   return (
     <nav className={`fixed top-0 left-0 right-0 z-50 pb-2 ${transparent ? '' : 'shadow-sm'}`} style={{ backgroundColor: transparent ? 'transparent' : '#ffffff', borderBottom: transparent ? 'none' : '1px solid #e5e7eb' }}>
     <>
-      <TopMarquee />
+      {/* <TopMarquee /> */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}

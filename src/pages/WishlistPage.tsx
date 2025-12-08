@@ -5,6 +5,7 @@ import { AuthContext } from '../context/AuthContext';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 import SkeletonProductCard from '../components/SkeletonProductCard';
 import { Link } from 'react-router-dom';
+import { ImageWithFallback } from '../components/figma/ImageWithFallback';
 
 export default function WishlistPage() {
   const { user, accessToken } = useContext(AuthContext);
@@ -43,7 +44,7 @@ export default function WishlistPage() {
             {products.map(p => (
               <Link key={p.id} to={`/product/${p.id}`} className="group bg-white rounded-lg shadow-sm hover:shadow-lg transition overflow-hidden">
                 <div className="aspect-square bg-gray-100 overflow-hidden">
-                  <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                  <ImageWithFallback src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" decoding="async" draggable={false} />
                 </div>
                 <div className="p-4">
                   <p className="text-sm text-gray-500 mb-1">{p.category || 'Frame'}</p>

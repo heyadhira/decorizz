@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { Navbar } from '../components/Navbar';
 import { Footer } from '../components/Footer';
@@ -51,7 +51,6 @@ interface Product {
 export default function ShopPage() {
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
   const [expandedSections, setExpandedSections] = useState({
@@ -148,9 +147,6 @@ export default function ShopPage() {
     }
   }, []);
 
-  useEffect(() => {
-    applyFilters();
-  }, [products, filters]);
 
   const fetchProducts = async () => {
     try {
@@ -182,7 +178,7 @@ export default function ShopPage() {
     return counts;
   };
 
-  const roomCounts = getRoomCounts();
+  const roomCounts = useMemo(() => getRoomCounts(), [products]);
 
   const getCategoryCounts = () => {
     const counts: { [key: string]: number } = {};
@@ -192,60 +188,10 @@ export default function ShopPage() {
     });
     return counts;
   };
-  const categoryCounts = getCategoryCounts();
+  const categoryCounts = useMemo(() => getCategoryCounts(), [products]);
   const categoryNames = Object.keys(categoryCounts).sort();
 
-  const applyFilters = () => {
-    let result = [...products];
 
-    if (filters.rooms.length > 0) {
-      result = result.filter(p => filters.rooms.includes(p.roomCategory || p.room || ''));
-    }
-
-    if (filters.layouts.length > 0) {
-      result = result.filter(p => filters.layouts.includes(p.layout || ''));
-    }
-
-    if (filters.sizes.length > 0) {
-      result = result.filter(p => {
-        if (Array.isArray(p.sizes)) {
-          return p.sizes.some(s => filters.sizes.includes(s));
-        }
-        return filters.sizes.includes(p.size || '');
-      });
-    }
-
-    if (filters.colors.length > 0) {
-      result = result.filter(p => p.colors?.some(c => filters.colors.includes(c)));
-    }
-
-    if (filters.materials.length > 0) {
-      result = result.filter(p => filters.materials.includes(p.material || ''));
-    }
-
-    if (filters.categories.length > 0) {
-      result = result.filter(p => filters.categories.includes(p.category || ''));
-    }
-
-    result = result.filter(p => p.price >= filters.priceMin && p.price <= filters.priceMax);
-
-    switch (filters.sortBy) {
-      case 'price-low':
-        result.sort((a, b) => a.price - b.price);
-        break;
-      case 'price-high':
-        result.sort((a, b) => b.price - a.price);
-        break;
-      case 'newest':
-        result.sort((a, b) => new Date(b.createdAt || 0).getTime() - new Date(a.createdAt || 0).getTime());
-        break;
-      default:
-        break;
-    }
-
-    setFilteredProducts(result);
-    setCurrentPage(1);
-  };
 
   const toggleFilter = (filterType: string, value: string) => {
     setFilters(prev => {
@@ -282,6 +228,83 @@ export default function ShopPage() {
     filters.colors.length + 
     filters.materials.length + 
     filters.categories.length;
+
+
+
+const filteredProducts = useMemo(() => {
+  let result = [...products];
+
+  if (filters.rooms.length > 0) {
+    result = result.filter(p => filters.rooms.includes(p.roomCategory || p.room || ''));
+  }
+
+  if (filters.layouts.length > 0) {
+    result = result.filter(p => filters.layouts.includes(p.layout || ''));
+  }
+
+  if (filters.sizes.length > 0) {
+    result = result.filter(p => {
+      if (Array.isArray(p.sizes)) return p.sizes.some(s => filters.sizes.includes(s));
+      return filters.sizes.includes(p.size || '');
+    });
+  }
+
+  if (filters.colors.length > 0) {
+    result = result.filter(p => p.colors?.some(c => filters.colors.includes(c)));
+  }
+
+  if (filters.materials.length > 0) {
+    result = result.filter(p => filters.materials.includes(p.material || ''));
+  }
+
+  if (filters.categories.length > 0) {
+    result = result.filter(p => filters.categories.includes(p.category || ''));
+  }
+
+  result = result.filter(p => p.price >= filters.priceMin && p.price <= filters.priceMax);
+
+  switch (filters.sortBy) {
+    case 'price-low':
+      result.sort((a, b) => a.price - b.price);
+      break;
+    case 'price-high':
+      result.sort((a, b) => b.price - a.price);
+      break;
+    case 'newest':
+      result.sort(
+        (a, b) =>
+          new Date(b.createdAt || '').getTime() -
+          new Date(a.createdAt || '').getTime()
+      );
+      break;
+  }
+
+  return result;
+}, [products, filters]);
+
+
+
+const finalFilteredProducts = useMemo(() => {
+  return filteredProducts.filter(p => {
+    const matchFormat =
+      formatSubsection === "All" ? true : p.format === formatSubsection;
+
+    const matchSubsection =
+      subsectionChip === "All" ? true : p.subsection === subsectionChip;
+
+    return matchFormat && matchSubsection;
+  });
+}, [filteredProducts, formatSubsection, subsectionChip]);
+
+const totalPages = useMemo(() => {
+  return Math.max(1, Math.ceil(finalFilteredProducts.length / PAGE_SIZE));
+}, [finalFilteredProducts]);
+
+const paginatedProducts = useMemo(() => {
+  const start = (currentPage - 1) * PAGE_SIZE;
+  return finalFilteredProducts.slice(start, start + PAGE_SIZE);
+}, [finalFilteredProducts, currentPage]);
+
 
   return (
     <div className="min-h-screen about-theme content-offset">
@@ -731,63 +754,65 @@ export default function ShopPage() {
               </div>
             ) : filteredProducts.length > 0 ? (
               <>
-                {(() => {
-                  const filteredList = filteredProducts.filter(p => {
-                    const byFormat = formatSubsection === 'All' ? true : (p.format === formatSubsection);
-                    const bySubsection = subsectionChip === 'All' ? true : (p.subsection === subsectionChip);
-                    return byFormat && bySubsection;
-                  });
-                  const total = filteredList.length;
-                  const totalPages = Math.max(1, Math.ceil(total / PAGE_SIZE));
-                  const start = (currentPage - 1) * PAGE_SIZE;
-                  const pageItems = filteredList.slice(start, start + PAGE_SIZE);
-                  return (
-                    <>
-                      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                        {pageItems.map(product => {
-                          const chosenSize = filters.sizes[0] || '';
-                          const effectiveSubsection = subsectionChip === 'All' ? (product.subsection || 'Basic') : subsectionChip;
-                          const overridePrice =
-                            formatSubsection !== 'All' && chosenSize
-                              ? computePriceFor(
-                                  chosenSize,
-                                  formatSubsection as 'Rolled' | 'Canvas' | 'Frame',
-                                  effectiveSubsection as 'Basic' | '2-Set' | '3-Set' | 'Square'
-                                )
-                              : undefined;
-                          return <ProductCard key={product.id} product={product} overridePrice={overridePrice} eyeNavigates />;
-                        })}
-                      </div>
-                      {totalPages > 1 && (
-                        <div className="flex items-center justify-center gap-2 mt-8">
-                          <button
-                            className="px-3 py-2 rounded-lg border"
-                            onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
-                            disabled={currentPage === 1}
-                          >
-                            Prev
-                          </button>
-                          {Array.from({ length: totalPages }).map((_, i) => (
-                            <button
-                              key={i}
-                              className={`px-3 py-2 rounded-lg border ${currentPage === i + 1 ? 'bg-teal text-white border-[#14b8a6]' : ''}`}
-                              onClick={() => setCurrentPage(i + 1)}
-                            >
-                              {i + 1}
-                            </button>
-                          ))}
-                          <button
-                            className="px-3 py-2 rounded-lg border"
-                            onClick={() => setCurrentPage(p => p + 1)}
-                            disabled={currentPage >= totalPages}
-                          >
-                            Next
-                          </button>
-                        </div>
-                      )}
-                    </>
-                  );
-                })()}
+               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+  {paginatedProducts.map(product => {
+    const chosenSize = filters.sizes[0] || "";
+    const effectiveSub =
+      subsectionChip === "All" ? product.subsection || "Basic" : subsectionChip;
+
+    const overridePrice =
+      formatSubsection !== "All" && chosenSize
+        ? computePriceFor(
+            chosenSize,
+            formatSubsection as "Rolled" | "Canvas" | "Frame",
+            effectiveSub as "Basic" | "2-Set" | "3-Set" | "Square"
+          )
+        : undefined;
+
+    return (
+      <ProductCard
+        key={product.id}
+        product={product}
+        overridePrice={overridePrice}
+        eyeNavigates
+      />
+    );
+  })}
+</div>
+
+{/* Pagination */}
+{totalPages > 1 && (
+  <div className="flex items-center justify-center gap-2 mt-8">
+    <button
+      className="px-3 py-2 rounded-lg border"
+      onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+      disabled={currentPage === 1}
+    >
+      Prev
+    </button>
+
+    {Array.from({ length: totalPages }).map((_, i) => (
+      <button
+        key={i}
+        className={`px-3 py-2 rounded-lg border ${
+          currentPage === i + 1 ? "bg-teal text-white border-[#14b8a6]" : ""
+        }`}
+        onClick={() => setCurrentPage(i + 1)}
+      >
+        {i + 1}
+      </button>
+    ))}
+
+    <button
+      className="px-3 py-2 rounded-lg border"
+      onClick={() => setCurrentPage(p => p + 1)}
+      disabled={currentPage >= totalPages}
+    >
+      Next
+    </button>
+  </div>
+)}
+
               </>
             ) : (
               <div className="text-center py-12">

@@ -45,6 +45,9 @@ import ContactUsPage from './pages/ContactUsPage';
 import { WhatsappButton } from './components/WhatsappButton';
 import { CookieConsent } from './components/CookieConsent';
 import { AuthContext, AuthContextType, User } from './context/AuthContext';
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+
+const queryClient = new QueryClient();
 
 
 
@@ -200,6 +203,7 @@ function App() {
   }
 
   return (
+    <QueryClientProvider client={queryClient}>
     <AuthContext.Provider value={authValue}>
       <BrowserRouter>
         <Routes>
@@ -287,6 +291,7 @@ function App() {
       <Toaster position="top-right" />
       <CookieConsent />
     </AuthContext.Provider>
+    </QueryClientProvider>
   );
 }
 

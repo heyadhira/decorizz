@@ -22,6 +22,10 @@ import image2 from "../assets/2.jpg";
 import image3 from "../assets/3.jpg";
 import image4 from "../assets/4.jpg";
 import image5 from "../assets/5.jpg";
+import heroMobile from "../assets/owlmobile.jpg";
+
+
+
 
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext, type CarouselApi } from "../components/ui/carousel";
 
@@ -44,23 +48,21 @@ interface Testimonial {
   profileImage?: string;
 }
 
+
+
+
+
+
+
+
 export default function HomePage() {
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([]);
   const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [loading, setLoading] = useState(true);
   const [heroApi, setHeroApi] = useState<CarouselApi | null>(null);
-  const heroImages = [
-    
-      
-  
-    image4,
-    image5,
-    
-  ];
   const [formatFilter, setFormatFilter] = useState<'All' | 'Rolled' | 'Canvas' | 'Frame'>('All');
   const [bestApi, setBestApi] = useState<CarouselApi | null>(null);
   const [bestSelected, setBestSelected] = useState(0);
-  const [viewportW, setViewportW] = useState<number>(typeof window !== 'undefined' ? window.innerWidth : 1024);
   const [faqs, setFaqs] = useState<any[]>([]);
   const [faqsLoading, setFaqsLoading] = useState(true);
   const [testApi, setTestApi] = useState<CarouselApi | null>(null);
@@ -118,12 +120,6 @@ export default function HomePage() {
   }, [heroApi]);
 
   useEffect(() => {
-    const onResize = () => setViewportW(window.innerWidth);
-    window.addEventListener('resize', onResize);
-    return () => window.removeEventListener('resize', onResize);
-  }, []);
-
-  useEffect(() => {
     fetchFaqs();
   }, []);
 
@@ -145,7 +141,7 @@ export default function HomePage() {
     finally { setFaqsLoading(false); }
   };
 
-  const slidesPerView = viewportW >= 1024 ? 3 : viewportW >= 640 ? 2 : 1;
+
 
 useEffect(() => {
   if (!bestApi) return;
@@ -182,21 +178,50 @@ const scrollBestSellerRight = () => {
   bestSellerRef.current.scrollBy({ left: clientWidth, behavior: "smooth" });
 };
 
+// Track screen width for switching mobile/desktop images
+// Track screen width for switching mobile/desktop images
+const [viewportW, setViewportW] = useState(
+  typeof window !== "undefined" ? window.innerWidth : 1024
+);
+
+useEffect(() => {
+  const handleResize = () => setViewportW(window.innerWidth);
+  window.addEventListener("resize", handleResize);
+
+  return () => window.removeEventListener("resize", handleResize);
+}, []);
+
+
+const heroImagesDesktop = [owl];
+const heroImagesMobile = [heroMobile];
+
+const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
+
+
+
   return (
     <div className="min-h-screen about-theme content-offset">
       <Navbar />
 <section className="hero-section">
-  <Carousel opts={{ loop: true, align: "center", slidesToScroll: 1 }} setApi={(api) => setHeroApi(api)} className="w-screen overflow-hidden">
+  <Carousel
+    opts={{ loop: true, align: "center", slidesToScroll: 1 }}
+    setApi={(api) => setHeroApi(api)}
+    className="w-screen overflow-hidden"
+  >
     <CarouselContent className="ml-0 gap-0">
       {heroImages.map((src, idx) => (
         <CarouselItem key={idx} className="basis-full min-w-full pl-0">
           <div className="relative w-full">
             <img src={src} alt="Hero" className="hero-image" />
-            <div className="hero-overlay" style={{ background: "rgba(0,0,0,0.45)" }} />
+            <div
+              className="hero-overlay"
+              style={{ background: "rgba(0,0,0,0.45)" }}
+            />
           </div>
         </CarouselItem>
       ))}
     </CarouselContent>
+
     <CarouselPrevious className="hidden lg:flex" />
     <CarouselNext className="hidden lg:flex" />
   </Carousel>
@@ -212,12 +237,6 @@ const scrollBestSellerRight = () => {
     </div>
   </div>
 </section>
-
-
-
-
-
-
 
 
 {/* BEST SELLERS */}
@@ -300,7 +319,7 @@ const scrollBestSellerRight = () => {
       className="best-card cursor-pointer"
       style={{ aspectRatio: isCenter ? "4 / 5" : "4 / 4" }}
     >
-      <img src={p.image} alt={p.name} />
+      <img src={p.image} alt={p.name} loading="lazy" decoding="async" draggable={false} />
       <div className="best-caption">{p.name}</div>
     </div>
   </Link>
