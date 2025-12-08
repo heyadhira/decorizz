@@ -66,6 +66,8 @@ export default function HomePage() {
   const [faqs, setFaqs] = useState<any[]>([]);
   const [faqsLoading, setFaqsLoading] = useState(true);
   const [testApi, setTestApi] = useState<CarouselApi | null>(null);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
   const computeTags = () => {
     const words = new Set<string>();
     featuredProducts.forEach((p:any) => {
@@ -717,20 +719,36 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
     <div className="max-w-7xl mx-auto px-4">
       <h2 className="custom-heading">FAQs</h2>
       <div className="faq-list">
-        {faqs.map((f) => (
-          <details key={f.id} className="faq-item group">
-            <summary className="faq-summary">
-              <span className="faq-icon">
-                <span className="plus group-open:hidden">+</span>
-                <span className="minus hidden group-open:inline">−</span>
-              </span>
-              <span className="faq-question">{String(f.question).toUpperCase()}</span>
-            </summary>
-            <div className="faq-answer">
-              {f.answer}
-            </div>
-          </details>
-        ))}
+        {faqs.map((f) => {
+  const isOpen = openFaq === f.id;
+
+  return (
+    <details
+      key={f.id}
+      open={isOpen}
+      className="faq-item group"
+      onClick={(e) => {
+        e.preventDefault(); // stop default open/close
+        setOpenFaq(isOpen ? null : f.id); // toggle logic
+      }}
+    >
+      <summary className="faq-summary">
+        <span className="faq-icon">
+          <span className={`plus ${isOpen ? "hidden" : "inline"}`}>+</span>
+          <span className={`minus ${isOpen ? "inline" : "hidden"}`}>−</span>
+        </span>
+        <span className="faq-question">{String(f.question).toUpperCase()}</span>
+      </summary>
+
+      {isOpen && (
+        <div className="faq-answer">
+          {f.answer}
+        </div>
+      )}
+    </details>
+  );
+})}
+
       </div>
     </div>
   </section>
