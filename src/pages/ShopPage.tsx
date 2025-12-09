@@ -8,6 +8,55 @@ import { Filter, X, ChevronDown } from 'lucide-react';
 import { projectId, publicAnonKey } from '../utils/supabase/info';
 
 
+const SORT_OPTIONS = [
+  { value: "popular", label: "Most Popular" },
+  { value: "newest", label: "Newest" },
+  { value: "price-low", label: "Price: Low to High" },
+  { value: "price-high", label: "Price: High to Low" }
+];
+
+function SortDropdown({ value, onChange }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <div className="relative w-48">
+      {/* Button */}
+      <button
+        className="border px-4 py-2 rounded-xl bg-white text-gray-700 font-medium 
+                   w-full flex items-center justify-between"
+        style={{ borderColor: "#d1d5db" }}
+        onClick={() => setOpen(!open)}
+      >
+        {SORT_OPTIONS.find(o => o.value === value)?.label}
+        <ChevronDown className={`w-4 h-4 transition ${open ? "rotate-180" : ""}`} />
+      </button>
+
+      {/* Dropdown */}
+      {open && (
+        <div
+          className="absolute left-0 top-12 w-full bg-white rounded-xl shadow-xl 
+                     border border-gray-200 z-50 animate-fadeIn"
+        >
+          {SORT_OPTIONS.map(opt => (
+            <button
+              key={opt.value}
+              onClick={() => {
+                onChange(opt.value);
+                setOpen(false);
+              }}
+              className="w-full text-left px-4 py-3 text-sm hover:bg-teal-100 rounded-lg transition"
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+
+
 const ROOM_OPTIONS = [
   { name: 'Home Bar' },
   { name: 'Bath Space' },
@@ -24,11 +73,23 @@ const ROOM_OPTIONS = [
   { name: 'Pooja Room' },
 ];
 
+
 const LAYOUT_OPTIONS = ['Portrait', 'Square', 'Landscape'];
 const SIZE_OPTIONS = ['8×12', '12×18', '18×24', '20×30', '24×36', '30×40', '36×48', '48×66', '18×18', '24×24', '36×36', '20×20', '30×30'];
 const COLOR_OPTIONS = ['White', 'Black', 'Brown'];
 const MATERIAL_OPTIONS = ['Wood', 'Metal', 'Plastic', 'Glass'];
 // CATEGORY_OPTIONS now computed dynamically from products
+
+// Simple Fisher–Yates shuffle
+function shuffleArray<T>(array: T[]): T[] {
+  const arr = [...array];
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  return arr;
+}
+
 
 interface Product {
   id: string;
@@ -50,10 +111,15 @@ interface Product {
 }
 
 export default function ShopPage() {
+  // ⬇️ Add this block RIGHT AFTER imports
+
+
   const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showFilters, setShowFilters] = useState(false);
+  const shuffledProducts = useMemo(() => shuffleArray(products), [products]);
+
   const [expandedSections, setExpandedSections] = useState({
     room: true,
     layout: true,
@@ -233,7 +299,8 @@ export default function ShopPage() {
 
 
 const filteredProducts = useMemo(() => {
-  let result = [...products];
+  // 🔹 Start from shuffled list instead of original
+  let result = [...shuffledProducts];
 
   if (filters.rooms.length > 0) {
     result = result.filter(p => filters.rooms.includes(p.roomCategory || p.room || ''));
@@ -278,10 +345,12 @@ const filteredProducts = useMemo(() => {
           new Date(a.createdAt || '').getTime()
       );
       break;
+    // 'popular' → keep shuffled order
   }
 
   return result;
-}, [products, filters]);
+}, [shuffledProducts, filters]);
+
 
 
 
@@ -679,36 +748,23 @@ const paginatedProducts = useMemo(() => {
           {/* Products Grid */}
           <div className="flex-1">
             {/* Sort */}
-            <div className="flex items-center justify-between mb-6">
-              <p className="text-gray-600" style={{ fontWeight: 500 }}>
-                <span style={{ color: '#14b8a6', fontWeight: 700 }}>{filteredProducts.length}</span> products found
-              </p>
-              <select
-                value={filters.sortBy}
-                onChange={(e) =>
-                  setFilters(prev => ({ ...prev, sortBy: e.target.value }))
-                }
-                className="border rounded-lg px-4 py-2 focus:outline-none transition"
-                style={{
-                  borderColor: '#d1d5db',
-                  fontWeight: 500
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.borderColor = '#14b8a6';
-                  e.currentTarget.style.boxShadow = '0 0 0 3px rgba(20, 184, 166, 0.1)';
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.borderColor = '#d1d5db';
-                  e.currentTarget.style.boxShadow = 'none';
-                }}
-              >
-                <option value="popular">Most Popular</option>
-                <option value="newest">Newest</option>
-                <option value="price-low">Price: Low to High</option>
-                <option value="price-high">Price: High to Low</option>
-              </select>
-            </div>
+<div className="flex items-center justify-between mb-6 
+                max-sm:flex-col max-sm:items-start max-sm:gap-3">
 
+  <p className="text-gray-600" style={{ fontWeight: 500 }}>
+    <span style={{ color: '#14b8a6', fontWeight: 700 }}>
+      {filteredProducts.length}
+    </span> 
+    {" "}products found
+  </p>
+
+<SortDropdown
+  value={filters.sortBy}
+  onChange={(val) => setFilters(prev => ({ ...prev, sortBy: val }))}
+ />
+
+
+</div>
             {/* Subsection Chips */}
             <div className="flex flex-wrap gap-2 mb-4">
               {(['All','2-Set','3-Set','Square'] as const).map(opt => (
@@ -756,7 +812,7 @@ const paginatedProducts = useMemo(() => {
             ) : filteredProducts.length > 0 ? (
               <>
               
-               <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+<div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-6">
   {paginatedProducts.map(product => {
     const chosenSize = filters.sizes[0] || "";
     const effectiveSub =
@@ -781,6 +837,7 @@ const paginatedProducts = useMemo(() => {
     );
   })}
 </div>
+
 
 {/* Pagination */}
 {totalPages > 1 && (

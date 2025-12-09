@@ -28,24 +28,25 @@ export default function AboutPage() {
         <img
           src={aboutImg}
           alt="Decor your home"
-          className="w-full h-140 sm:h-[480px] object-fit"
+          className="about-image w-full h-160 object-fit"
         />
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent p-8" />
 
         <div className="absolute inset-0 flex items-center">
           <div className="px-6 sm:px-10 max-w-2xl space-y-5 hero-fade-up">
-            <h1 className="text-white font-rashi text-5xl sm:text-6xl font-extrabold italic leading-tight drop-shadow-2xl mb-6">
-              Decor Your Home
+            <h1 className="custom-heading pt-6 drop-shadow-2xl">
+              <span className="pb-6" style={{ color: '#14b8a6',fontStyle: 'italic', }}>Style </span>
+              Your
               <br />
-              With Style
+             Space
             </h1>
 
 
 
             <a
               href="#who-we-are"
-              className="premium-btn-white inline-block"
+              className="premium-btn-white inline-block mt-2"
             >
               Start your Journey
             </a>
@@ -54,7 +55,7 @@ export default function AboutPage() {
       </section>
 
       {/* WHO WE ARE */}
-      <section id="who-we-are" className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-16 mb-16">
+      <section id="who-we-are" className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-12 mb-12">
         <div className="soft-card p-10 lg:p-14 space-y-6 card-appear ">
           <h2 className="custom-heading mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
             Who We <span style={{ color: "#14b8a6" }}>Are</span>
@@ -241,7 +242,7 @@ export default function AboutPage() {
 
 
       {/* CONTACT */}
-   <section className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-16 mb-16">
+   <section className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-12 mb-12">
   <div className="soft-card p-10 lg:p-14 space-y-8 card-appear">
 
     {/* Section Title */}

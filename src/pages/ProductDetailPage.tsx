@@ -70,27 +70,23 @@ useEffect(() => {
       );
       const data = await response.json();
 
-      if (data.product) {
-        setProduct(data.product);
-        if (data.product.colors?.length > 0) {
-          setSelectedColor(data.product.colors[0]);
-          setDefaultColor(data.product.colors[0]);
-        }
-        if (data.product.sizes?.length > 0) {
-          setSelectedSize(data.product.sizes[0]);
-          setDefaultSize(data.product.sizes[0]);
-        }
+    if (data.product) {
+  const p = data.product;
 
-        if (data.product.format) {
-          setSelectedFormat(data.product.format);
-          setDefaultFormat(data.product.format);
-        }
-        if (data.product.frameColor) {
-          setSelectedFrameColor(data.product.frameColor);
-        }
+  setProduct({
+    ...p,
+    selectedColor: p.colors?.[0] || "",
+    defaultColor: p.colors?.[0] || "",
+    selectedSize: p.sizes?.[0] || "",
+    defaultSize: p.sizes?.[0] || "",
+    selectedFormat: p.format || "Rolled",
+    defaultFormat: p.format || "Rolled",
+    selectedFrameColor: p.frameColor || "Black",
+  });
 
-        fetchRelatedProducts(data.product.category);
-      }
+  fetchRelatedProducts(p.category);
+}
+
     } catch (error) {
       console.error('Fetch product error:', error);
     } finally {
@@ -326,7 +322,7 @@ const mainImage = useMemo(() => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen about-theme content-offset">
         <Navbar />
         <div className="flex justify-center items-center h-96">
           <div className="animate-spin h-12 w-12 rounded-full border-b-2" style={{ borderColor: '#14b8a6' }}></div>
@@ -338,7 +334,7 @@ const mainImage = useMemo(() => {
 
   if (!product) {
     return (
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen about-theme content-offset">
         <Navbar />
         <div className="max-w-7xl mx-auto px-4 py-20 text-center">
           <h1 className="text-3xl font-semibold text-gray-900 mb-4">Product Not Found</h1>
@@ -357,7 +353,7 @@ const mainImage = useMemo(() => {
 
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen about-theme content-offset">
       <Navbar />
 
       {/* Decorative Squares (top) */}
@@ -464,14 +460,14 @@ const mainImage = useMemo(() => {
             </div>
 
               
-            <h1 className="custom-heading animate-title mb-2 text-gray-900">
-              {product.name}
+            <h1 className="custom-heading">
+              <span>{product.name}</span>
             </h1>
 
-            <div className="flex items-center justify-between mb-6">
-            <p className="text-3xl font-bold text-gray-900">
-                ₹{(computePriceFor(selectedSize, selectedFormat, product.subsection) ?? product.price).toFixed(2)}
-              </p>
+            <div className="flex items-center justify-between mb-6 mt-6">
+            <h3 className="custom-heading">
+              <span className="custom-color">₹{(computePriceFor(selectedSize, selectedFormat, product.subsection) ?? product.price).toFixed(2)}</span>  
+              </h3>
               <div className="flex items-center gap-2">
                 <button className="p-2 rounded-lg border hover:bg-gray-50" onClick={()=>{ navigator.clipboard.writeText(window.location.href); toast.success('Link copied'); }} title="Copy Link">
                   <Copy className="w-5 h-5 text-gray-700" />
@@ -505,8 +501,9 @@ const mainImage = useMemo(() => {
                     <button
                       key={fmt}
                       onClick={() => available && setSelectedFormat(fmt)}
-                      className={`px-6 py-2 rounded-lg border-2 transition premium-btn ${
-                        selectedFormat === fmt ? 'border-teal-500 bg-teal-50 text-teal-600' : 'border-gray-300 text-gray-700'
+                      className={`px-6 py-2 rounded-lg border-2 transition ${
+                        selectedFormat === fmt ? 'border-teal-500 bg-teal text-white'
+                          : 'border-gray-300 text-gray-700'
                       } ${available ? '' : 'opacity-50 cursor-not-allowed'}`}
                       title={available ? '' : 'Not available for this size'}
                       disabled={!available}
@@ -515,7 +512,7 @@ const mainImage = useMemo(() => {
                     </button>
                   );
                 })}
-                <button onClick={() => { setSelectedColor(defaultColor); setSelectedSize(defaultSize); setSelectedFormat(defaultFormat); }} className="px-6 py-2 rounded-lg border text-gray-800 premium-btn">Clear Selection</button>
+                <button onClick={() => { setSelectedColor(defaultColor); setSelectedSize(defaultSize); setSelectedFormat(defaultFormat); }} className="px-6 py-2 rounded-lg border text-gray-800 ">Clear</button>
               </div>
 
             </div>
@@ -570,12 +567,6 @@ const mainImage = useMemo(() => {
               </div>
             )}
 
-            
-
-           
-
-            
-
             {/* Quantity */}
             <div className="mb-8">
               <h3 className="font-semibold text-gray-900 mb-3">Quantity</h3>
@@ -597,38 +588,54 @@ const mainImage = useMemo(() => {
             </div>
 
             {/* Buttons */}
-            <div className="flex gap-4 mb-8">
-              <button
-                onClick={handleAddToCart}
-                className="flex-1 px-10 py-3 rounded-xl text-white shadow-xl transition"
-                style={{ backgroundColor: '#14b8a6' }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0d9488')}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#14b8a6')}
-              >
-                <div className="flex gap-2 items-center justify-center">
-                  <ShoppingCart className="w-5 h-5" />
-                  Add to Cart
-                </div>
-              </button>
+           <div className="flex gap-4 mb-8">
 
-              <button
-                onClick={handleBuyNow}
-                className="flex-1 px-10 py-3 rounded-xl text-white shadow-xl transition premium-btn"
-                style={{ backgroundColor: '#111827' }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = '#0b1220')}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = '#111827')}
-              >
-                Buy Now
-              </button>
+  {/* Add to Cart */}
+  <button
+    onClick={handleAddToCart}
+    className="
+      flex-1 px-10 py-3 rounded-xl 
+      text-black font-semibold 
+      bg-teal-500 hover:bg-teal-600 
+      shadow-lg hover:shadow-xl 
+      transition-all duration-200
+    "
+  >
+    <div className="flex gap-2 items-center justify-center">
+      <ShoppingCart className="w-5 h-5" />
+      Add to Cart
+    </div>
+  </button>
 
-              <button
-                onClick={handleAddToWishlist}
-                className="w-12 h-12 border-2 rounded-xl flex items-center justify-center transition"
-                style={{ borderColor: '#cbd5e1' }}
-              >
-                <Heart className="w-5 h-5 text-gray-600" />
-              </button>
-            </div>
+  {/* Buy Now */}
+  <button
+    onClick={handleBuyNow}
+    className="
+      flex-1 px-10 py-3 rounded-xl 
+      text-white font-semibold 
+      bg-gray-900 hover:bg-gray-800
+      shadow-lg hover:shadow-xl 
+      transition-all duration-200
+    "
+  >
+    Buy Now
+  </button>
+
+  {/* Wishlist */}
+  <button
+    onClick={handleAddToWishlist}
+    className="
+      w-12 h-12 rounded-xl border-2 
+      flex items-center justify-center
+      border-gray-300 hover:border-teal-500
+      hover:bg-teal-50 transition-all duration-200
+    "
+  >
+    <Heart className="w-5 h-5 text-gray-600 hover:text-teal-600" />
+  </button>
+
+</div>
+
 
             <div className="mt-6 rounded-2xl bg-white border border-gray-200 shadow-sm p-6 space-y-6">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-gray-800">
@@ -739,13 +746,15 @@ const mainImage = useMemo(() => {
           </div>
 
         </div>
+        {console.log("PRODUCT DATA = ", product)}
 
         {/* Related Products */}
 {relatedProducts.length > 0 && (
   <div className="mt-20">
-    <h2 className="text-4xl font-bold text-center mb-12">
+    <h2 className="custom-heading font-bold text-center mb-12">
       Related <span style={{ color: "#14b8a6" }}>Frames</span>
     </h2>
+
 
     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {relatedProducts.map((product) => (
@@ -755,7 +764,9 @@ const mainImage = useMemo(() => {
       ))}
     </div>
   </div>
+  
 )}
+
 
       </div>
 
@@ -763,3 +774,5 @@ const mainImage = useMemo(() => {
     </div>
   );
 }
+
+

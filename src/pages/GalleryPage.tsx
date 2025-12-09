@@ -92,7 +92,7 @@ export default function GalleryPage() {
       <section className="w-full py-14 px-4 sm:py-20 mt-6 mb-6">
         <div className="max-w-7xl mx-auto">
           <div className="soft-card p-8 sm:p-12 card-appear">
-            <h1 className="text-center text-4xl sm:text-5xl font-bold font-rashi animate-title mb-4">
+            <h1 className="text-center custom-heading">
               Our <span style={{ color: "#14b8a6" }}>Gallery</span>
             </h1>
             <p className="text-center text-gray-600 max-w-3xl mx-auto italic text-base sm:text-lg">
@@ -103,91 +103,118 @@ export default function GalleryPage() {
         </div>
       </section>
 
-      {/* FILTER */}
-      <div className="max-w-7xl mx-auto px-4 pb-10">
-        <div className="flex gap-3 overflow-x-auto no-scrollbar">
-          {categories.map((cat) => (
-            <button
-              key={cat}
-              onClick={() => setFilter(cat)}
-              className={`px-6 py-2 rounded-full account-tab font-medium shadow-md transition-all whitespace-nowrap text-black
-                ${
-                  filter === cat
-                    ? "bg-[#14b8a6] text-black"
-                    : "bg-white text-gray-700 border border-gray-300"
-                }`}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
+{/* FILTER SECTION */}
+<div className="max-w-7xl mx-auto px-4">
+  <div
+    className="
+      flex 
+      gap-3 
+      overflow-x-auto 
+      no-scrollbar
+      md:flex-wrap 
+      md:overflow-visible
+    "
+  >
+    {categories.map((cat) => (
+      <button
+        key={cat}
+        onClick={() => setFilter(cat)}
+        className={`
+          px-3 py-2 
+          rounded-xl
+          border 
+        
+          text-sm md:text-base
+          transition
+          ${
+            filter === cat
+              ? "bg-teal text-white"
+              : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
+          }
+        `}
+      >
+        {cat}
+      </button>
+    ))}
+  </div>
+</div>
+
+
 
       {/* GALLERY */}
-      <div className="max-w-7xl mx-auto px-4 pb-10">
-        {loading ? (
-          <div className="flex justify-center py-20">
-            <div className="animate-spin h-12 w-12 border-b-2 border-[#14b8a6] rounded-full"></div>
-          </div>
-        ) : flattened.length === 0 ? (
-          <p className="text-center py-20 text-gray-500 text-lg">
-            No items found
-          </p>
-        ) : (
-          <div className="space-y-16">
-            {years.map((year) => (
-              <div key={year}>
-                <h2 className="text-4xl font-rashi font-bold text-[#3b2f27] mb-10 pt-12">
-                  {year}
-                </h2>
+<div className="max-w-7xl mx-auto px-4 pb-12">
+  {loading ? (
+    <div className="flex justify-center py-20">
+      <div className="animate-spin h-12 w-12 border-b-2 border-[#14b8a6] rounded-full"></div>
+    </div>
+  ) : flattened.length === 0 ? (
+    <p className="text-center py-20 text-gray-500 text-lg">
+      No items found
+    </p>
+  ) : (
+    <div className="space-y-16">
+      {years.map((year) => (
+        <div key={year}>
+          <h2 className="text-4xl font-rashi font-bold text-[#3b2f27] mb-10 pt-12">
+            {year}
+          </h2>
 
-                <div
-                  className="
-                  grid 
-                  grid-cols-1 
-                  sm:grid-cols-2 
-                  md:grid-cols-4 
-                  lg:grid-cols-4 
-                  gap-8
-                "
-                >
-                  {itemsByYear[year].map((item) => (
-                    <div
-                      key={item.id}
-                      onClick={() => setSelectedImage(item)}
-                      className="curved-image-card cursor-pointer"
-                    >
-                      <div className="w-full aspect-[4/3] bg-gray-100">
-                        <ImageWithFallback
-                          src={item.thumbUrl || item.image}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+          {/* TWO IMAGES PER ROW ALWAYS */}
+          <div
+            className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 pt-6">
+            {itemsByYear[year].map((item) => (
+              <div
+                key={item.id}
+                onClick={() => setSelectedImage(item)}
+                className="curved-image-card cursor-pointer">
+                <div className="w-full aspect-[4/3] bg-gray-100">
+                  <ImageWithFallback
+                    src={item.thumbUrl || item.image}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
 
-                      <div className="p-4">
-                        <h3 className="font-rashi font-semibold text-lg text-gray-800">
-                          {item.title}
-                        </h3>
-                        {item.productId && (
-                          <div className="mt-2 flex gap-2">
-                            <button onClick={(e)=>{ e.stopPropagation(); addToCart(item.productId); }} className="px-3 py-1 rounded border border-gray-300 text-gray-800">Add to Cart</button>
-                            <a href={`/product/${item.productId}`} onClick={(e)=>e.stopPropagation()} className="px-3 py-1 rounded premium-btn-white">View Product</a>
-                          </div>
-                        )}
-                      </div>
+                <div className="p-4">
+                  <h3 className="font-rashi font-semibold text-lg text-gray-800">
+                    {item.title}
+                  </h3>
+
+                  {item.productId && (
+                    <div className="mt-2 flex gap-2">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          addToCart(item.productId);
+                        }}
+                        className="px-3 py-1 rounded border border-gray-300 text-gray-800"
+                      >
+                        Add to Cart
+                      </button>
+
+                      <a
+                        href={`/product/${item.productId}`}
+                        onClick={(e) => e.stopPropagation()}
+                        className="px-3 py-1 rounded premium-btn-white"
+                      >
+                        View Product
+                      </a>
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
             ))}
           </div>
-        )}
-      </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
       {/* PAGINATION */}
       {flattened.length > ITEMS_PER_PAGE && (
-        <div className="max-w-7xl mx-auto px-4 pb-20">
-          <div className="flex justify-center gap-3 flex-wrap">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="flex justify-center gap-3 flex-wrap pb-12">
 
             {/* Prev */}
             <button
@@ -209,7 +236,7 @@ export default function GalleryPage() {
                 onClick={() => setCurrentPage(i + 1)}
                 className={`px-4 py-2 rounded-full border shadow-sm transition-all ${
                   currentPage === i + 1
-                    ? "bg-[#14b8a6] text-white"
+                    ? "bg-teal text-white"
                     : "bg-white text-gray-700 hover:bg-gray-50"
                 }`}
               >

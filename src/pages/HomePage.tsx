@@ -227,15 +227,15 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
     <CarouselPrevious className="hidden lg:flex" />
     <CarouselNext className="hidden lg:flex" />
   </Carousel>
-  <div className="hero-content">
-    <div className="hero-container text-left">
+  <div className="hero-content mt-8">
+    <div className="p-8 text-left">
       <h1 className="custom-heading"><span className="text-white">Discover</span> <span className="accent">300+</span> <span className="text-white">Modern</span></h1><br />
       <h2 className="custom-heading"><span className="text-white">Wall Frames</span></h2>
       <div className="hero-buttons">
         <Link to="/shop" className="premium-btn-white">Shop Now</Link>
         <Link to="/contact" className="premium-btn-white">Contact us</Link>
       </div>
-      <div className="hero-caption">300+ Collection of premium frame</div>
+      <div className="hero-caption pl-4">300+ Collection of premium frame</div>
     </div>
   </div>
 </section>

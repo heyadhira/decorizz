@@ -78,11 +78,12 @@ export default function UserAccountPage() {
         {/* TITLE */}
         <h1 className="custom-heading mb-12">My Account</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-4 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-8 sm:gap-10">
+
 
           {/* SIDEBAR */}
           <div className="lg:col-span-1">
-            <div className="card-soft rounded-2xl p-5">
+            <div className="card-soft rounded-xl p-2">
               {tabs.map((t) => (
                 <button
                   key={t.id}
