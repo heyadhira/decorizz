@@ -59,12 +59,21 @@
 @layer theme {
   :root, :host {
     /* Font sizes for headings */
-  --heading-mobile: 1.50rem;   /* ~text-4xl */
-  --heading-tablet: 2.5rem;    /* custom size */
-  --heading-desktop: 3rem;     /* ~text-5xl */
+  --heading-mobile: 1.25rem;   /* ~text-4xl */
+  --heading-tablet: 2rem;    /* custom size */
+  --heading-desktop: 2rem;     /* ~text-5xl */
 
   /* Line-height */
   --heading-line: 1;
+
+
+  img {
+  -webkit-user-drag: none;
+  user-drag: none;
+  pointer-events: none;
+}
+
+
 
 
     --font-sans: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
@@ -624,6 +633,14 @@ body {
     margin-left: calc(var(--spacing) * 2);
   }
 
+   .ml-4 {
+    margin-left: calc(var(--spacing) * 4);
+  }
+
+  .ml-6 {
+    margin-left: calc(var(--spacing) * 6);
+  }
+
   .ml-64 {
     margin-left: calc(var(--spacing) * 64);
   }
@@ -1037,7 +1054,9 @@ body {
 
   .border-b-2 {
     border-bottom-style: var(--tw-border-style);
-    border-bottom-width: 2px;
+    padding-bottom: 10px;
+    border-bottom-width: 3px;
+    border-color: #14b8a6;
   }
 
   .border-dashed {
@@ -3186,7 +3205,7 @@ html {
 ====================================== */
 
 .about-theme {
-  background-color: #f3f1ed !important;
+  background-color: #edf3ef !important;
 }
 
 /* Typography inside About Page only */
@@ -3390,12 +3409,13 @@ html {
 
 /* CARD CONTAINER */
 .best-card {
-  border-radius: 20px;
+  border-radius: 10px;
   overflow: hidden;
   background: #ffffff;
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.12);
   position: relative;
   transition: box-shadow 0.35s ease, transform 0.35s ease;
+  font-size: 1.50rem;
 }
 
 /* Add soft hover on center card only */
@@ -3656,7 +3676,7 @@ html {
 
 /* Soft card polish */
 .soft-card { transition: box-shadow .25s ease, transform .25s ease; }
-.soft-card:hover { box-shadow: 0 12px 24px rgba(0,0,0,.08); transform: translateY(-2px); }
+/* .soft-card:hover { box-shadow: 0 12px 24px rgba(0,0,0,.08); transform: translateY(-2px); } */
 
 /* Premium buttons smooth */
 .premium-btn, .premium-btn-white { transition: background-color .2s ease, color .2s ease, transform .2s ease; }
@@ -3739,7 +3759,7 @@ html {
  
 
   .best-caption {
-    font-size: 1rem !important; /* smaller text */
+    font-size: 1.2rem !important; /* smaller text */
     padding: 6px 0 !important;
   }
 
@@ -3755,7 +3775,7 @@ html {
 
   /* Reduce aspect ratio for mobile for shorter cards */
 .best-card {
-    aspect-ratio: 2.6 / 4 !important;   /* MORE SMALLER */
+    aspect-ratio: 3 / 4 !important;   /* MORE SMALLER */
     border-radius: 12px !important;
   }
 }
@@ -3808,3 +3828,42 @@ html {
 .animate-fadeIn {
   animation: fadeIn 0.15s ease-out;
 }
+
+
+/* REAL WATERMARK (never visible in UI) */
+.protect-image {
+  position: relative;
+}
+
+.protect-image::after {
+  content: "DECORIZZ";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 140px;
+  font-weight: 800;
+  color: rgba(255, 255, 255, 0.25);
+  pointer-events: none;
+
+  opacity: 0; /* Always hidden */
+  transition: opacity 0.2s ease-out;
+
+  /* Protect styling applies ONLY on screenshot / print */
+  mix-blend-mode: overlay;
+}
+
+/* When user tries to PRINT → watermark ON */
+@media print {
+  .protect-image::after {
+    opacity: 1 !important;
+  }
+}
+
+/* When device captures screen (forced print-screen mode) */
+@supports (-webkit-touch-callout: none) {
+  .protect-image.screenshot::after {
+    opacity: 1 !important;
+  }
+}
+

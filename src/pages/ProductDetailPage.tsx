@@ -12,6 +12,8 @@ import { cartEvents } from '../utils/cartEvents';
 import { optimizeImage } from "../utils/optimizeImage";
 import { useInView } from "react-intersection-observer";
 import LazyShow from "../components/LazyShow";
+import watermark from "../assets/watermark.png";
+
 
 
 export default function ProductDetailPage() {
@@ -59,6 +61,21 @@ useEffect(() => {
   useEffect(() => {
     fetchProduct();
   }, [id]);
+
+useEffect(() => {
+  const handler = () => {
+    document.querySelectorAll(".protect-image").forEach(el => {
+      el.classList.add("screenshot");
+      setTimeout(() => el.classList.remove("screenshot"), 1500);
+    });
+  };
+
+  window.addEventListener("keyup", (e) => {
+    if (e.key === "PrintScreen") handler();
+  });
+
+  return () => window.removeEventListener("keyup", () => {});
+}, []);
 
 
   useEffect(() => {
@@ -411,29 +428,38 @@ const mainImage = useMemo(() => {
          <div className="soft-card rounded-2xl bg-white p-4">
          
 
+<div
+  ref={imageContainerRef}
+  className="rounded-lg overflow-hidden bg-black/5"
+  style={{ height: "70vh", cursor: zoom > 1 ? "grab" : "default" }}
+>
   <div
-    ref={imageContainerRef}
-    className="rounded-lg overflow-hidden bg-black/5"
-    style={{ height: "70vh", cursor: zoom > 1 ? "grab" : "default" }}
+    style={{
+      transform: `scale(${zoom})`,
+      transformOrigin: "center center",
+      width: "100%",
+      height: "100%",
+      transition: "transform 0.25s ease-out",
+    }}
   >
-    <div
-      style={{
-        transform: `scale(${zoom})`,
-        transformOrigin: "center center",
-        width: "100%",
-        height: "100%",
-        transition: "transform 0.25s ease-out",
-      }}
-    >
-      <ImageWithFallback
-        src={mainImage}
-        alt={product.name}
-        loading="lazy"
-        decoding="async"
-        className="w-full h-full object-contain select-none"
-      />
-    </div>
+
+    {/* 🔥 Image + Watermark Added Here */}
+<div className="relative w-full h-full protect-image">
+
+  {/* Main Product Image */}
+  <ImageWithFallback
+    src={mainImage}
+    alt={product.name}
+    loading="lazy"
+    decoding="async"
+    className="w-full h-full object-contain select-none"
+  />
+
+</div>
+
   </div>
+</div>
+
 
    {/* --- THUMBNAIL STRIP – COLOR IMAGES + EXTRA IMAGES + MAIN IMAGE --- */}
 <div className="flex gap-3 overflow-x-auto pb-4 pt-4 no-scrollbar">
@@ -781,6 +807,42 @@ const mainImage = useMemo(() => {
               </details>
             </div>
 
+            {/* Specifications */}
+            {/* {product.material && (
+              <div className="border-t border-gray-200 pt-6">
+                <h3 className="text-2xl font-semibold mb-4">Specifications</h3>
+                <div className="space-y-2 text-gray-700">
+                  <div className="flex justify-between">
+                    <span>Material:</span>
+                    <span>{product.material}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Colors:</span>
+                    <span>{product.colors.join(', ')}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Sizes:</span>
+                    <span>{product.sizes.join(', ')}</span>
+                </div>
+
+        </div>
+
+      
+        <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white/90 backdrop-blur border-t border-gray-200 p-3 z-40">
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm text-gray-600">Total</p>
+              <p className="text-xl font-bold text-gray-900">₹{(computePriceFor(selectedSize, selectedFormat, product.subsection) ?? product.price).toFixed(2)}</p>
+            </div>
+            <div className="flex gap-3">
+              <button onClick={handleAddToCart} className="px-4 py-2 rounded-lg border border-gray-300 text-gray-800">Add</button>
+              <button onClick={handleBuyNow} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#14b8a6' }}>Buy Now</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+            )} */}
           </div>
 
         </div>
@@ -791,6 +853,8 @@ const mainImage = useMemo(() => {
     <h2 className="custom-heading font-bold text-center mb-12">
       Related <span style={{ color: "#14b8a6" }}>Frames</span>
     </h2>
+
+
     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {relatedProducts.map((product) => (
         <LazyShow key={product.id}>
@@ -801,9 +865,13 @@ const mainImage = useMemo(() => {
   </div>
   
 )}
+
+
       </div>
 
       <Footer />
     </div>
   );
 }
+
+

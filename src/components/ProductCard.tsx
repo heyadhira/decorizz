@@ -103,13 +103,16 @@ function ProductCardComponent({ product, overridePrice, eyeNavigates }: ProductC
     >
       <div className="relative aspect-square overflow-hidden bg-gray-100">
 
-        <ImageWithFallback
-          src={optimizeImage(product.image, 480)}
-          alt={product.name}
-          loading="lazy"
-          decoding="async"
-          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-        />
+        <div className="protect-image w-full h-full">
+  <ImageWithFallback
+    src={optimizeImage(product.image, 480)}
+    alt={product.name}
+    loading="lazy"
+    decoding="async"
+    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+  />
+</div>
+
 
         {/* Overlay buttons */}
         <div className="absolute inset-0 flex items-end justify-end p-2 gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -166,11 +169,14 @@ function ProductCardComponent({ product, overridePrice, eyeNavigates }: ProductC
           >
             <div className="grid grid-cols-1 md:grid-cols-2">
               <div className="relative aspect-square overflow-hidden bg-gray-100">
+  <div className="protect-image w-full h-full">
   <ImageWithFallback
     src={optimizeImage(product.image, 480)}
     alt={product.name}
     className="w-full h-full object-cover"
   />
+</div>
+
 </div>
 
 

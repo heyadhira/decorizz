@@ -22,7 +22,9 @@ export default function AboutPage() {
       <Navbar />
 
 {/* HERO HEADER */}
-<section className="hero-section relative w-full overflow-hidden">
+<section className="hero-section relative w-full overflow-hidden"
+>
+
 
   {/* Background Image */}
   <img
@@ -39,9 +41,9 @@ export default function AboutPage() {
 
     <div className="p-6 max-w-xl hero-fade-up">
 
-      <h1 className="hero-title mt-12">
-        <span>Style </span>
-         <span className="text-white">Your</span> <br />
+      <h1 className="hero-title mt-12 font-extrabold">
+       Style 
+         <span className="text-white"> Your</span> <br />
         <span className="text-white">Space </span>
       </h1>
 
@@ -63,7 +65,7 @@ export default function AboutPage() {
 
       {/* WHO WE ARE */}
       <section id="who-we-are" className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-12 mb-12">
-        <div className="soft-cad p-10 lg:p-14 space-y-6 card-appear ">
+        <div className="soft-card p-10 lg:p-14 card-appear p-6 mb-">
           <h2
   className="custom-heading mb-4 ml-6 pb-2 border-b-2 border-[#14b8a6] mt-6 inline-block"
 >

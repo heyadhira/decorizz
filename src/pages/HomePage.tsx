@@ -349,10 +349,6 @@ const heroImages = viewportW < 768 ? heroImagesMobile : heroImagesDesktop;
 </section>
 
 
-
-
-
-
  {/* CUSTOM CANVAS PROMO */}
 <section
   className="py-16 lg:py-20 relative bg-cover bg-center bg-no-repeat"
