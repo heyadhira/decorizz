@@ -28,6 +28,11 @@ export default function AdminProducts() {
   const [colorImageFiles, setColorImageFiles] = useState<Record<string, File | null>>({});
   const [colorImagePreviews, setColorImagePreviews] = useState<{White?: string; Black?: string; Brown?: string}>({});
 
+  const [extraImages, setExtraImages] = useState<File[]>([]);
+const [extraImagePreviews, setExtraImagePreviews] = useState<string[]>([]);
+
+
+
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -47,6 +52,14 @@ export default function AdminProducts() {
     frameColor: "Black",
     imagesByColor: { White: "", Black: "", Brown: "" },
   });
+
+  const handleExtraImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const files = Array.from(e.target.files || []);
+  setExtraImages(files);
+
+  const previews = files.map((file) => URL.createObjectURL(file));
+  setExtraImagePreviews(previews);
+};
 
   // Fetch Products
   useEffect(() => {
@@ -115,6 +128,36 @@ export default function AdminProducts() {
     }
   };
 
+  const uploadExtraImages = async () => {
+  let uploadedUrls: string[] = [];
+
+  for (const file of extraImages) {
+    const fd = new FormData();
+    fd.append("file", file);
+
+    try {
+      const response = await fetch(
+        `https://${projectId}.supabase.co/functions/v1/make-server-52d68140/products/upload`,
+        {
+          method: "POST",
+          headers: { Authorization: `Bearer ${accessToken}` },
+          body: fd,
+        }
+      );
+
+      const data = await response.json();
+      if (response.ok && data.url) {
+        uploadedUrls.push(data.url);
+      }
+    } catch {
+      toast.error("Failed uploading extra images");
+    }
+  }
+
+  return uploadedUrls;
+};
+
+
   const uploadImage = async () => {
     if (!imageFile) return formData.image;
 
@@ -165,6 +208,9 @@ export default function AdminProducts() {
         frameColor: product.frameColor || "Black",
         imagesByColor: (product as any).imagesByColor || { White: "", Black: "", Brown: "" },
       });
+
+      setExtraImages([]);
+  setExtraImagePreviews([]);
     } else {
       setEditingProduct(null);
       setFormData({
@@ -195,6 +241,8 @@ export default function AdminProducts() {
     e.preventDefault();
 
     // Upload image first if new image selected
+    const extraImagesUrls = await uploadExtraImages();
+
     const imageUrl = await uploadImage();
     const byColor: any = { ...formData.imagesByColor };
     for (const c of ['White','Black','Brown'] as const) {
@@ -206,6 +254,10 @@ export default function AdminProducts() {
       price: parseFloat(formData.price),
       image: imageUrl,
       imagesByColor: byColor,
+        // 🟢 FIX — preserve old gallery images
+  extraImages: extraImagesUrls.length > 0 
+    ? extraImagesUrls 
+    : editingProduct?.extraImages || [],
     };
 
     try {
@@ -720,6 +772,56 @@ export default function AdminProducts() {
               </label>
             ))}
           </div>
+
+          {/* MULTIPLE IMAGES SECTION */}
+<div className="border-t pt-6 mt-6">
+  <h3 className="text-lg font-bold text-gray-900 mb-1">
+    Additional Product Images (Optional)
+  </h3>
+  <p className="text-sm text-gray-500 mb-4">
+    Upload multiple images for gallery display
+  </p>
+
+  <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
+    <span className="text-sm text-gray-600">Choose Multiple Images</span>
+    <input
+      type="file"
+      multiple
+      accept="image/*"
+      className="hidden"
+      onChange={handleExtraImagesChange}
+    />
+  </label>
+
+  {/* Previews */}
+  {extraImagePreviews.length > 0 && (
+    <div className="grid grid-cols-3 gap-3 mt-4">
+      {extraImagePreviews.map((src, idx) => (
+        <div key={idx} className="relative">
+          <img
+            src={src}
+            className="w-full h-24 object-cover rounded border"
+          />
+          <button
+            type="button"
+            className="absolute top-1 right-1 bg-red-600 text-white p-1 rounded"
+            onClick={() => {
+              const updatedFiles = [...extraImages];
+              const updatedPreviews = [...extraImagePreviews];
+              updatedFiles.splice(idx, 1);
+              updatedPreviews.splice(idx, 1);
+              setExtraImages(updatedFiles);
+              setExtraImagePreviews(updatedPreviews);
+            }}
+          >
+            <X className="w-4 h-4" />
+          </button>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
 
           {/* SIZES */}
           <div className="border-t pt-6 mt-6">
