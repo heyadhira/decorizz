@@ -260,7 +260,7 @@ export default function AboutPage() {
     </h2>
 
     {/* TWO COLUMN LAYOUT */}
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
       {/* LEFT COLUMN – CONTACT DETAILS */}
       <div className="space-y-8 pl-6 px-4 text-xl font-bold text-[#14b8a6]">
