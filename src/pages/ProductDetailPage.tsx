@@ -32,6 +32,8 @@ export default function ProductDetailPage() {
   const [defaultSize, setDefaultSize] = useState('');
   const [defaultFormat, setDefaultFormat] = useState<'Rolled' | 'Canvas' | 'Frame'>('Rolled');
   const [zoom, setZoom] = useState(1);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
 
   const imageContainerRef = useRef(null);
 
@@ -58,6 +60,12 @@ useEffect(() => {
     fetchProduct();
   }, [id]);
 
+
+  useEffect(() => {
+  setSelectedImage(null);
+}, [selectedFormat, selectedColor]);
+
+
   const fetchProduct = async () => {
     try {
       const response = await fetch(
@@ -73,16 +81,27 @@ useEffect(() => {
     if (data.product) {
   const p = data.product;
 
-  setProduct({
-    ...p,
-    selectedColor: p.colors?.[0] || "",
-    defaultColor: p.colors?.[0] || "",
-    selectedSize: p.sizes?.[0] || "",
-    defaultSize: p.sizes?.[0] || "",
-    selectedFormat: p.format || "Rolled",
-    defaultFormat: p.format || "Rolled",
-    selectedFrameColor: p.frameColor || "Black",
-  });
+const autoSize = p.sizes?.includes("8X12") ? "8X12" : p.sizes?.[0] || "";
+const autoColor = p.colors?.[0] || "";
+const autoFormat = p.format || "Rolled";
+
+setProduct({
+  ...p,
+  selectedColor: autoColor,
+  defaultColor: autoColor,
+  selectedSize: autoSize,
+  defaultSize: autoSize,
+  selectedFormat: autoFormat,
+  defaultFormat: autoFormat,
+  selectedFrameColor: p.frameColor || "Black",
+});
+
+// Update states too
+setSelectedSize(autoSize);
+setSelectedColor(autoColor);
+setSelectedFormat(autoFormat);
+
+
 
   fetchRelatedProducts(p.category);
 }
@@ -305,18 +324,23 @@ useEffect(() => {
 
   
 const mainImage = useMemo(() => {
-  if (!product) return "";
+    if (!product) return "";
 
-  const isFrame = selectedFormat === "Frame";
+    // If user clicked a thumbnail → always priority
+    if (selectedImage) {
+      return optimizeImage(selectedImage, 800);
+    }
 
-  const colorImage = product.imagesByColor?.[selectedColor];
+    // If Frame selected → use frame color images
+    if (selectedFormat === "Frame") {
+      const colorImg = product.imagesByColor?.[selectedColor];
+      if (colorImg) return optimizeImage(colorImg, 800);
+    }
 
-  // Frame → use color image
-  // Canvas & Rolled → use base product image
-  const finalSrc = isFrame ? (colorImage || product.image) : product.image;
+    // Default → main product image
+    return optimizeImage(product.image, 800);
+}, [product, selectedImage, selectedColor, selectedFormat]);
 
-  return optimizeImage(finalSrc, 800);
-}, [product, selectedColor, selectedFormat]);
 
 
 
@@ -385,6 +409,8 @@ const mainImage = useMemo(() => {
 
           {/* Image Box */}
          <div className="soft-card rounded-2xl bg-white p-4">
+         
+
   <div
     ref={imageContainerRef}
     className="rounded-lg overflow-hidden bg-black/5"
@@ -408,6 +434,54 @@ const mainImage = useMemo(() => {
       />
     </div>
   </div>
+
+   {/* --- THUMBNAIL STRIP – COLOR IMAGES + EXTRA IMAGES + MAIN IMAGE --- */}
+<div className="flex gap-3 overflow-x-auto pb-4 pt-4 no-scrollbar">
+
+    {/* 3️⃣ Main Product Image */}
+  <div
+    onClick={() => setSelectedImage(product.image)}
+    className={`w-20 h-20 rounded-lg border cursor-pointer overflow-hidden 
+    ${selectedImage === product.image ? "border-teal-500 shadow-md" : "border-gray-300"}`}
+  >
+    <img src={product.image} className="w-full h-full object-cover" />
+  </div>
+
+  {/* 1️⃣ Frame Color Images */}
+  {selectedFormat === "Frame" &&
+    product.imagesByColor &&
+    Object.entries(product.imagesByColor).map(([color, url]) => (
+      url && (
+        <div
+          key={color}
+          onClick={() => {
+            setSelectedImage(url);
+            setSelectedColor(color);
+          }}
+          className={`w-20 h-20 rounded-lg border cursor-pointer overflow-hidden 
+          ${selectedImage === url ? "border-teal-500 shadow-md" : "border-gray-300"}`}
+        >
+          <img src={url} className="w-full h-full object-cover" alt={color} />
+        </div>
+      )
+    ))}
+
+  {/* 2️⃣ Extra Images */}
+  {product.extraImages?.length > 0 &&
+    product.extraImages.map((img, index) => (
+      <div
+        key={index}
+        onClick={() => setSelectedImage(img)}
+        className={`w-20 h-20 rounded-lg border cursor-pointer overflow-hidden 
+        ${selectedImage === img ? "border-teal-500 shadow-md" : "border-gray-300"}`}
+      >
+        <img src={img} className="w-full h-full object-cover" />
+      </div>
+    ))}
+
+
+
+</div>
 
   {/* Zoom Buttons */}
   <div className="flex items-center gap-2 mt-3">
@@ -707,55 +781,16 @@ const mainImage = useMemo(() => {
               </details>
             </div>
 
-            {/* Specifications */}
-            {/* {product.material && (
-              <div className="border-t border-gray-200 pt-6">
-                <h3 className="text-2xl font-semibold mb-4">Specifications</h3>
-                <div className="space-y-2 text-gray-700">
-                  <div className="flex justify-between">
-                    <span>Material:</span>
-                    <span>{product.material}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Colors:</span>
-                    <span>{product.colors.join(', ')}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>Sizes:</span>
-                    <span>{product.sizes.join(', ')}</span>
-                </div>
-
-        </div>
-
-      
-        <div className="fixed bottom-0 left-0 right-0 lg:hidden bg-white/90 backdrop-blur border-t border-gray-200 p-3 z-40">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-gray-600">Total</p>
-              <p className="text-xl font-bold text-gray-900">₹{(computePriceFor(selectedSize, selectedFormat, product.subsection) ?? product.price).toFixed(2)}</p>
-            </div>
-            <div className="flex gap-3">
-              <button onClick={handleAddToCart} className="px-4 py-2 rounded-lg border border-gray-300 text-gray-800">Add</button>
-              <button onClick={handleBuyNow} className="px-4 py-2 rounded-lg text-white" style={{ backgroundColor: '#14b8a6' }}>Buy Now</button>
-            </div>
-          </div>
-        </div>
-
-      </div>
-            )} */}
           </div>
 
         </div>
-        {console.log("PRODUCT DATA = ", product)}
-
+  
         {/* Related Products */}
 {relatedProducts.length > 0 && (
   <div className="mt-20">
     <h2 className="custom-heading font-bold text-center mb-12">
       Related <span style={{ color: "#14b8a6" }}>Frames</span>
     </h2>
-
-
     <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-6">
       {relatedProducts.map((product) => (
         <LazyShow key={product.id}>
@@ -766,13 +801,9 @@ const mainImage = useMemo(() => {
   </div>
   
 )}
-
-
       </div>
 
       <Footer />
     </div>
   );
 }
-
-
