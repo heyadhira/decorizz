@@ -21,51 +21,61 @@ export default function AboutPage() {
     <div className="about-theme min-h-screen content-offset">
       <Navbar />
 
-      {/* HERO HEADER */}
-      <section
-        className="max-w-7xl relative mx-auto overflow-hidden rounded-lg "
-      >
-        <img
-          src={aboutImg}
-          alt="Decor your home"
-          className="about-image w-full h-160 object-fit"
-        />
+{/* HERO HEADER */}
+<section className="hero-section relative w-full overflow-hidden">
 
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/45 to-transparent p-8" />
+  {/* Background Image */}
+  <img
+    src={aboutImg}
+    alt="Decor your home"
+    className="hero-image"
+  />
 
-        <div className="absolute inset-0 flex items-center">
-          <div className="px-6 sm:px-10 max-w-2xl space-y-5 hero-fade-up">
-            <h1 className="custom-heading pt-6 drop-shadow-2xl">
-              <span className="pb-6" style={{ color: '#14b8a6',fontStyle: 'italic', }}>Style </span>
-              Your
-              <br />
-             Space
-            </h1>
+  {/* Dark Overlay */}
+  <div className="hero-overlay"></div>
+
+  {/* TEXT CONTENT */}
+  <div className="hero-content flex items-center justify-start px-6 sm:px-12">
+
+    <div className="p-6 max-w-xl hero-fade-up">
+
+      <h1 className="hero-title mt-12">
+        <span>Style </span>
+         <span className="text-white">Your</span> <br />
+        <span className="text-white">Space </span>
+      </h1>
+
+      <div className="hero-buttons mt-4">
+        <a
+          href="#who-we-are"
+          className="premium-btn-white hero-glow-btn"
+        >
+          Start your Journey
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
 
-
-            <a
-              href="#who-we-are"
-              className="premium-btn-white inline-block mt-2"
-            >
-              Start your Journey
-            </a>
-          </div>
-        </div>
-      </section>
 
       {/* WHO WE ARE */}
       <section id="who-we-are" className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-12 mb-12">
-        <div className="soft-card p-10 lg:p-14 space-y-6 card-appear ">
-          <h2 className="custom-heading mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
-            Who We <span style={{ color: "#14b8a6" }}>Are</span>
-          </h2>
+        <div className="soft-cad p-10 lg:p-14 space-y-6 card-appear ">
+          <h2
+  className="custom-heading mb-4 ml-6 pb-2 border-b-2 border-[#14b8a6] mt-6 inline-block"
+>
+  Who We <span style={{ color: "#14b8a6" }}>Are</span>
+</h2>
 
-          <p className="text-xl font-bold italic text-[#14b8a6] pl-6">
+
+          <p className="text-xl font-bold text-[#14b8a6] pl-6">
             We are a small, passionate team of creators, designers, and storytellers who believe
             that art can transform the energy of any room.
             <br />
-            Our journey began with one vision — to create artwork that makes people feel
+            Our journey began with one vision  to create artwork that makes people feel
             something. Not just decorations, but expressive pieces that add soul to a space.
             
             <br />
@@ -76,16 +86,16 @@ export default function AboutPage() {
 
           </p>
 
-          <p className="text-xl font-bold italic text-[#14b8a6] pl-6">
+          <p className="text-xl font-bold text-[#14b8a6] pl-6">
             “Would I hang this in my own home?”
           </p>
 
-          <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
-            If the answer isn’t a confident yes — we don’t publish it.
+          <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
+            If the answer isn’t a confident yes  we don’t publish it.
             
             <br />
             Our inspiration spans minimalism, pop-art, abstract, photography, shapes, patterns,
-            and the world around us — creating a blend of fresh, modern, and expressive art.
+            and the world around us  creating a blend of fresh, modern, and expressive art.
             
             <br />
             Beyond the artwork, we deeply care about how you feel when you receive it.
@@ -98,22 +108,21 @@ export default function AboutPage() {
      <div className="soft-card p-10 lg:p-14 card-appear p-6">
 
     {/* TITLE */}
-    <h2 className="custom-heading pl-6  border-b-2 border-[#14b8a6]">
+    <h2 className="custom-heading mb-4 ml-6 pb-2 border-b-2 border-[#14b8a6] mt-6 inline-block">
       <span className="text-[#3b2f27]">Why</span>
       <span style={{ color: "#14b8a6" }}> Choose Us</span>
     </h2>
 
     <div className="grid md:grid-cols-2 gap-12 items-center">
 
-
        {/* left IMAGES */}
-      <div className="soft-card p-6 hover-lift">
-        <div className="grid grid-cols-2 gap-4">
+      <div className="soft-card p-6">
+        <div className="grid grid-cols-2 gap-4 ">
           {[canvaImg, owlImg].map((src, i) => (
-            <div key={i} className="overflow-hidden rounded-xl premium-shadow">
+            <div key={i} className="overflow-hidden rounded-xl ">
               <img
                 src={src}
-                className="w-full h-32 object-cover transition-all duration-300 hover:scale-105"
+                className="w-full h-32 object-cover"
               />
             </div>
           ))}
@@ -121,15 +130,15 @@ export default function AboutPage() {
       </div>
 
       {/* right TEXT */}
-      <div className="space-y-6">
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
+      <div className="space-y-4">
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
           Choose us because we genuinely care about what goes on your wall. Our
           designs are original, our materials are premium, and our team provides
-          real human support — not automated messages.
+          real human support not automated messages.
         </p>
 
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
-           With Decorizz, you're not just buying wall art — you’re bringing home
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
+           With Decorizz, you're not just buying wall art  you’re bringing home
           something crafted with intention.
         </p>
 
@@ -147,7 +156,7 @@ export default function AboutPage() {
   <div className="soft-card p-10 lg:p-14 card-appear p-6">
 
     {/* TITLE */}
-    <h2 className="custom-heading pl-6  border-b-2 border-[#14b8a6]">
+    <h2 className="custom-heading mb-4 ml-6 pb-2 border-b-2 border-[#14b8a6] mt-6 inline-block">
       <span className="text-[#3b2f27]">Our</span>
       <span style={{ color: "#14b8a6" }}> Mission</span>
     </h2>
@@ -156,27 +165,27 @@ export default function AboutPage() {
 
       {/* LEFT TEXT */}
       <div className="space-y-6">
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
           Every piece we create is designed to add joy, emotion, and depth
-          to your home — one wall at a time.
+          to your home  one wall at a time.
         </p>
 
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
           Our mission is simple: make decorating effortless, enjoyable, and 
           meaningful, helping people express personality through living art.
         </p>
 
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
-          We believe your walls should reflect who you are — your style, your
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
+          We believe your walls should reflect who you are  your style, your
           story, and the moments that matter most.
         </p>
       </div>
 
       {/* RIGHT IMAGES */}
-      <div className="soft-card p-6 hover-lift">
+      <div className="soft-card p-6">
         <div className="grid grid-cols-2 gap-4">
           {[image2, image1, image3, image4].map((src, i) => (
-            <div key={i} className="overflow-hidden rounded-xl premium-shadow">
+            <div key={i} className="overflow-hidden rounded-xl">
               <img
                 src={src}
                 className="w-full h-32 object-cover transition-all duration-300 hover:scale-105"
@@ -196,7 +205,7 @@ export default function AboutPage() {
      <div className="soft-card p-10 lg:p-14 card-appear p-6">
 
     {/* TITLE */}
-    <h2 className="custom-heading pl-6  border-b-2 border-[#14b8a6]">
+    <h2 className="custom-heading mb-4 ml-6 pb-2 border-b-2 border-[#14b8a6] mt-6 inline-block">
       <span className="text-[#3b2f27]">Why We</span>
       <span style={{ color: "#14b8a6" }}> Stand Out</span>
     </h2>
@@ -205,10 +214,10 @@ export default function AboutPage() {
 
 
        {/* left IMAGES */}
-      <div className="soft-card p-6 hover-lift">
+      <div className="soft-card p-6">
         <div className="grid grid-cols-2 gap-4">
           {[heroImg,logor].map((src, i) => (
-            <div key={i} className="overflow-hidden rounded-xl premium-shadow">
+            <div key={i} className="overflow-hidden rounded-xl">
               <img
                 src={src}
                 className="w-full h-32 object-cover transition-all duration-300 hover:scale-105"
@@ -220,16 +229,16 @@ export default function AboutPage() {
 
       {/* right TEXT */}
       <div className="space-y-6">
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
-          At Decorizz, we don’t mass-produce art — we create it with heart.
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
+          At Decorizz, we don’t mass-produce art  we create it with heart.
         </p>
 
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
           Every artwork is thoughtfully designed, carefully reviewed, and crafted to bring
             warmth and character into your space.
         </p>
 
-        <p className="text-xl font-bold italic text-[#14b8a6] pl-6 mb-6">
+        <p className="text-xl font-bold text-[#14b8a6] pl-6 mb-6">
           When you shop with Decorizz, you're choosing creativity, not templates.
         </p>
 
@@ -243,10 +252,10 @@ export default function AboutPage() {
 
       {/* CONTACT */}
    <section className="max-w-7xl relative mx-auto overflow-hidden rounded-lg mt-12 mb-12">
-  <div className="soft-card p-10 lg:p-14 space-y-8 card-appear">
+  <div className="soft-card p-6 lg:p-14 space-y-8 card-appear">
 
     {/* Section Title */}
-    <h2 className="custom-heading mb-4 pl-6 pb-2 border-b-2 border-[#14b8a6] mt-6">
+    <h2 className="custom-heading mb-4 ml-6 pb-2 border-b-2 border-[#14b8a6] mt-6 inline-block">
       Contact <span style={{ color: "#14b8a6" }}>Us</span>
     </h2>
 
@@ -254,7 +263,7 @@ export default function AboutPage() {
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
 
       {/* LEFT COLUMN – CONTACT DETAILS */}
-      <div className="space-y-8 pl-6 px-4 text-xl font-bold italic text-[#14b8a6]">
+      <div className="space-y-8 pl-6 px-4 text-xl font-bold text-[#14b8a6]">
 
         <ContactItem
           icon={<MapPin className="w-7 h-7 text-[#8a6d56]" />}
@@ -276,16 +285,19 @@ export default function AboutPage() {
 
       </div>
 
+
       {/* RIGHT COLUMN – GOOGLE MAP */}
-      {/* RIGHT COLUMN – GOOGLE MAP */}
-<div className="soft-card p-2 rounded-2xl overflow-hidden shadow-md border border-[#e6ddd4]">
+<div className="soft-card p-2 rounded-xl overflow-hidden shadow-md border border-[#e6ddd4]">
+  
+  
   <iframe
-    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3567.704724910472!2d79.700000!3d28.930000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2sSitarganj!5e0!3m2!1sen!2sin!4v1706800000000"
+    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3489.2669416026324!2d79.64781057555636!3d29.00908607546123!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39a061f87cc0f677%3A0xe5fb13c9df318542!2sShakti%20farm%20market!5e0!3m2!1sen!2sin!4v1765270792894!5m2!1sen!2sin"
     width="100%"
     height="350"
     style={{
       border: "0",
       borderRadius: "18px",
+     
     }}
     allowFullScreen=""
     loading="lazy"
@@ -306,7 +318,7 @@ export default function AboutPage() {
 
 function ContactItem({ icon, title, text }) {
   return (
-    <div className="flex items-start gap-3 hover-lift">
+    <div className="flex items-start gap-3 mt-6">
       {icon}
       <div>
         <h3 className="text-lg font-semibold">{title}</h3>
