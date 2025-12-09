@@ -13,11 +13,10 @@
         { "key": "Permissions-Policy", "value": "geolocation=(), microphone=(), camera=(), fullscreen=(*), clipboard-read=(self)" },
         {
           "key": "Content-Security-Policy",
-          "value": "default-src 'self' https:; upgrade-insecure-requests; img-src 'self' data: blob: https: https://*.supabase.co https://*.googleusercontent.com https://*.fbcdn.net; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https: https://*.razorpay.com; connect-src 'self' https://*.supabase.co https://*.razorpay.com https://api.razorpay.com; frame-src https://www.youtube.com https://drive.google.com https://lh3.googleusercontent.com https://www.instagram.com https://*.razorpay.com; font-src 'self' data: https:; media-src 'self' https: data: blob:;"
+          "value": "default-src 'self' https:; upgrade-insecure-requests; img-src 'self' data: blob: https: https://*.supabase.co https://*.googleusercontent.com https://*.fbcdn.net https://maps.gstatic.com https://maps.googleapis.com; style-src 'self' 'unsafe-inline' https:; script-src 'self' 'unsafe-inline' https: https://*.razorpay.com https://maps.googleapis.com https://maps.gstatic.com; connect-src 'self' https://*.supabase.co https://*.razorpay.com https://api.razorpay.com https://maps.googleapis.com; frame-src https://www.youtube.com https://drive.google.com https://lh3.googleusercontent.com https://www.instagram.com https://*.razorpay.com https://www.google.com https://maps.google.com https://www.google.co.in; font-src 'self' data: https:; media-src 'self' https: data: blob:;"
         }
       ]
-    }
-    ,
+    },
     {
       "source": "/assets/(.*)",
       "headers": [
